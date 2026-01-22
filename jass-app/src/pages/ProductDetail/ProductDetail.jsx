@@ -1,0 +1,189 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { productsData } from '../../data/productsData';
+import Header from '../../components/Header/Header';
+import Contact from '../../components/Contact/Contact';
+import Footer from '../../components/Footer/Footer';
+import {
+  ProductDetailWrapper,
+  ProductDetailContainer,
+  BackButton,
+  ProductHero,
+  ProductImage,
+  ProductInfo,
+  ProductBrand,
+  ProductName,
+  ProductPrice,
+  ProductDescription,
+  Section,
+  SectionTitle,
+  SpecsGrid,
+  SpecItem,
+  SpecLabel,
+  SpecValue,
+  FeaturesList,
+  FeatureItem,
+  AddonsSection,
+  AddonCard,
+  AddonHeader,
+  AddonTitle,
+  AddonPrice,
+  AddonDescription,
+  AddonIncluded,
+  AddonCheckbox,
+  ApplicationSection,
+  ApplicationOptions,
+  ApplicationOption,
+  RadioInput,
+  RadioLabel,
+  BookingSection,
+  TotalPrice,
+  BookButton
+} from './ProductDetail.styles';
+
+const ProductDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const product = productsData.find(p => p.id === parseInt(id));
+  const [selectedAddons, setSelectedAddons] = useState([]);
+  const [applicationType, setApplicationType] = useState('store');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  const toggleAddon = (addonId) => {
+    setSelectedAddons(prev =>
+      prev.includes(addonId)
+        ? prev.filter(id => id !== addonId)
+        : [...prev, addonId]
+    );
+  };
+
+  const calculateTotal = () => {
+    const basePrice = parseInt(product.price.replace(/[₹,]/g, ''));
+    const addonsTotal = product.addons
+      .filter(addon => selectedAddons.includes(addon.id))
+      .reduce((sum, addon) => sum + parseInt(addon.price.replace(/[₹,]/g, '')), 0);
+    const applicationFee = applicationType === 'store' ? 20000 : 0;
+    return `₹${(basePrice + addonsTotal + applicationFee).toLocaleString('en-IN')}`;
+  };
+
+  return (
+    <>
+      <Header />
+      <ProductDetailWrapper>
+        <ProductDetailContainer>
+          <BackButton onClick={() => navigate('/products')}>← Back to Products</BackButton>
+          
+          <ProductHero>
+            <ProductImage src={process.env.PUBLIC_URL + product.image} alt={product.name} />
+            <ProductInfo>
+              <ProductBrand>{product.brand}</ProductBrand>
+              <ProductName>{product.name}</ProductName>
+              <ProductPrice>{product.price}</ProductPrice>
+              <ProductDescription>{product.detailedDescription}</ProductDescription>
+            </ProductInfo>
+          </ProductHero>
+
+          <Section>
+            <SectionTitle>Key Features</SectionTitle>
+            <FeaturesList>
+              {product.features.map((feature, index) => (
+                <FeatureItem key={index}>{feature}</FeatureItem>
+              ))}
+            </FeaturesList>
+          </Section>
+
+          <Section>
+            <SectionTitle>Specifications</SectionTitle>
+            <SpecsGrid>
+              {Object.entries(product.specifications).map(([key, value]) => (
+                <SpecItem key={key}>
+                  <SpecLabel>{key.charAt(0).toUpperCase() + key.slice(1)}</SpecLabel>
+                  <SpecValue>{value}</SpecValue>
+                </SpecItem>
+              ))}
+            </SpecsGrid>
+          </Section>
+
+          <AddonsSection>
+            <SectionTitle>Add-Ons</SectionTitle>
+            {product.addons.map((addon) => (
+              <AddonCard key={addon.id} $selected={selectedAddons.includes(addon.id)}>
+                <AddonCheckbox
+                  type="checkbox"
+                  checked={selectedAddons.includes(addon.id)}
+                  onChange={() => toggleAddon(addon.id)}
+                />
+                <div style={{ flex: 1 }}>
+                  <AddonHeader>
+                    <AddonTitle>{addon.title}</AddonTitle>
+                    <AddonPrice>{addon.price}</AddonPrice>
+                  </AddonHeader>
+                  <AddonDescription>{addon.description}</AddonDescription>
+                  <AddonIncluded>
+                    {addon.included.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </AddonIncluded>
+                </div>
+              </AddonCard>
+            ))}
+          </AddonsSection>
+
+          <ApplicationSection>
+            <SectionTitle>Application Location</SectionTitle>
+            <ApplicationOptions>
+              <ApplicationOption $selected={applicationType === 'store'}>
+                <RadioInput
+                  type="radio"
+                  name="application"
+                  value="store"
+                  checked={applicationType === 'store'}
+                  onChange={(e) => setApplicationType(e.target.value)}
+                />
+                <RadioLabel>
+                  <div>
+                    <strong>Application at Store</strong>
+                    <p>Professional installation at our facility</p>
+                  </div>
+                  <span>+₹20,000</span>
+                </RadioLabel>
+              </ApplicationOption>
+              <ApplicationOption $selected={applicationType === 'select'}>
+                <RadioInput
+                  type="radio"
+                  name="application"
+                  value="select"
+                  checked={applicationType === 'select'}
+                  onChange={(e) => setApplicationType(e.target.value)}
+                />
+                <RadioLabel>
+                  <div>
+                    <strong>Select Store Location</strong>
+                    <p>Choose your preferred store location</p>
+                  </div>
+                  <span>Free</span>
+                </RadioLabel>
+              </ApplicationOption>
+            </ApplicationOptions>
+          </ApplicationSection>
+
+          <BookingSection>
+            <TotalPrice>Total: {calculateTotal()}</TotalPrice>
+            <BookButton>Book Now</BookButton>
+          </BookingSection>
+        </ProductDetailContainer>
+      </ProductDetailWrapper>
+      <Contact carImage={process.env.PUBLIC_URL + "/detailing-coating-car.jpg"} />
+      <Footer />
+    </>
+  );
+};
+
+export default ProductDetail;
