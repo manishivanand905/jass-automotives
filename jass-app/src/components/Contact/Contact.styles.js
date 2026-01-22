@@ -27,6 +27,10 @@ export const ContactWrapper = styled.section`
   min-height: 100vh;
   display: flex;
   background-color: #e8e8e8;
+  opacity: ${props => props.$isVisible ? 1 : 0};
+  filter: blur(${props => props.$isVisible ? '0px' : '10px'});
+  transform: translateY(${props => props.$isVisible ? '0' : '30px'});
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 968px) {
     flex-direction: column;
@@ -41,7 +45,6 @@ export const LeftSection = styled.div`
   flex-direction: column;
   justify-content: center;
   background-color: #e8e8e8;
-  animation: ${shutterLeft} 1s ease-out;
 
   @media (max-width: 1200px) {
     padding: 80px 60px;
@@ -61,14 +64,13 @@ export const RightSection = styled.div`
   position: relative;
   overflow: hidden;
   background-color: #1a1a1a;
-  animation: ${shutterRight} 1s ease-out;
 
   @media (max-width: 968px) {
-    min-height: 500px;
+    min-height: auto;
   }
 
   @media (max-width: 576px) {
-    min-height: 400px;
+    min-height: auto;
   }
 `;
 
@@ -77,6 +79,11 @@ export const CarImage = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: center;
+
+  @media (max-width: 968px) {
+    height: auto;
+    display: block;
+  }
 `;
 
 export const Title = styled.h2`

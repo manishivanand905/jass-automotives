@@ -14,7 +14,10 @@ const glideUp = keyframes`
 export const TestimonialsSection = styled.section`
   background-color: #2d2d2d;
   padding: 80px 20px;
-  animation: ${glideUp} 1s ease-out;
+  opacity: ${props => props.$isVisible ? 1 : 0};
+  filter: blur(${props => props.$isVisible ? '0px' : '10px'});
+  transform: translateY(${props => props.$isVisible ? '0' : '30px'});
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 768px) {
     padding: 60px 20px;

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import {
   ServicesWrapper,
   Container,
@@ -16,18 +17,20 @@ import {
   CategoryTitle,
   CategoryDescription,
   CategoryReview,
+  HoverButton,
 } from "./Services.styles";
 import { categoriesData } from "../../data/categoriesData";
 
 const Services = () => {
   const navigate = useNavigate();
+  const [ref, isVisible] = useScrollAnimation();
 
   const handleCategoryClick = (categoryName) => {
     navigate(`/services?category=${categoryName}`);
   };
 
   return (
-    <ServicesWrapper>
+    <ServicesWrapper ref={ref} $isVisible={isVisible}>
       <Container>
         <TopSection>
           <LeftContent>
@@ -73,6 +76,11 @@ const Services = () => {
                   "{category.review}" — {category.reviewAuthor}
                 </CategoryReview>
               </CategoryContent>
+              <HoverButton>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </HoverButton>
             </CategoryCard>
           ))}
         </CategoriesGrid>

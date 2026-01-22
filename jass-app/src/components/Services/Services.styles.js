@@ -16,7 +16,10 @@ export const ServicesWrapper = styled.section`
   background-color: #e8e8e8;
   padding: 100px 0 120px;
   position: relative;
-  animation: ${float} 1s ease-out;
+  opacity: ${props => props.$isVisible ? 1 : 0};
+  filter: blur(${props => props.$isVisible ? '0px' : '10px'});
+  transform: translateY(${props => props.$isVisible ? '0' : '30px'});
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 968px) {
     padding: 80px 0 100px;
@@ -301,6 +304,7 @@ export const CategoryCard = styled.div`
     transform 0.3s ease,
     box-shadow 0.3s ease;
   cursor: pointer;
+  position: relative;
 
   &:hover {
     transform: translateY(-5px);
@@ -400,5 +404,45 @@ export const NavButton = styled.button`
     width: 45px;
     height: 45px;
     font-size: 18px;
+  }
+`;
+
+export const HoverButton = styled.div`
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #cc0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  pointer-events: none;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+  }
+
+  ${CategoryCard}:hover & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 576px) {
+    width: 40px;
+    height: 40px;
+    bottom: 25px;
+    right: 25px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;

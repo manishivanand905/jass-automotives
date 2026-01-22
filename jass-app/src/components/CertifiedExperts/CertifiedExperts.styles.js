@@ -19,7 +19,10 @@ export const CertifiedExpertsWrapper = styled.section`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  animation: ${reveal} 1.2s ease-out;
+  opacity: ${props => props.$isVisible ? 1 : 0};
+  filter: blur(${props => props.$isVisible ? '0px' : '10px'});
+  transform: translateY(${props => props.$isVisible ? '0' : '30px'});
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 968px) {
     min-height: 70vh;

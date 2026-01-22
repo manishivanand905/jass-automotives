@@ -1,4 +1,5 @@
 import React from "react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import { testimonialsData } from "../../data/testimonialsData";
 import {
   TestimonialsSection,
@@ -12,8 +13,10 @@ import {
 } from "./Testimonials.styles";
 
 const Testimonials = () => {
+  const [ref, isVisible] = useScrollAnimation();
+
   return (
-    <TestimonialsSection>
+    <TestimonialsSection ref={ref} $isVisible={isVisible}>
       <Container>
         <Title>Real Stories from Our Satisfied Customers</Title>
         <TestimonialsGrid>

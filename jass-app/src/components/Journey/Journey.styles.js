@@ -14,9 +14,13 @@ export const JourneyWrapper = styled.section`
   display: flex;
   min-height: 100vh;
   background-color: #000000;
+  opacity: ${props => props.$isVisible ? 1 : 0};
+  filter: blur(${props => props.$isVisible ? '0px' : '10px'});
+  transform: translateY(${props => props.$isVisible ? '0' : '30px'});
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 968px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     min-height: auto;
   }
 `;
@@ -28,11 +32,11 @@ export const ImageContainer = styled.div`
   background-color: #000000;
 
   @media (max-width: 968px) {
-    min-height: 500px;
+    min-height: auto;
   }
 
   @media (max-width: 576px) {
-    min-height: 350px;
+    min-height: auto;
   }
 `;
 
@@ -42,6 +46,11 @@ export const CarImage = styled.img`
   object-fit: cover;
   object-position: center left;
   opacity: 0.95;
+
+  @media (max-width: 968px) {
+    height: auto;
+    object-fit: contain;
+  }
 `;
 
 export const ContentContainer = styled.div`

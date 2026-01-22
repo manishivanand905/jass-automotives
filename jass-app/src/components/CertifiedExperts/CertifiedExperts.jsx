@@ -1,4 +1,5 @@
 import React from "react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import {
   CertifiedExpertsWrapper,
   BackgroundImage,
@@ -7,8 +8,10 @@ import {
 } from "./CertifiedExperts.styles";
 
 const CertifiedExperts = ({ backgroundImage }) => {
+  const [ref, isVisible] = useScrollAnimation();
+
   return (
-    <CertifiedExpertsWrapper>
+    <CertifiedExpertsWrapper ref={ref} $isVisible={isVisible}>
       <BackgroundImage
         $bgImage={backgroundImage || `${process.env.PUBLIC_URL}/garage-bg.jpg`}
       />

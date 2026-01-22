@@ -5,7 +5,7 @@ export const HeaderWrapper = styled.header`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 998;
   margin: 0;
   padding: 0;
 `;
@@ -20,18 +20,20 @@ export const HeaderContainer = styled.div`
   line-height: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 0;
+    padding: 10px 0;
     justify-content: space-between;
   }
 `;
 
-export const Logo = styled.div`
+export const Logo = styled.a`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
   margin: 10px;
   padding-left: 30px;
   line-height: 0;
+  text-decoration: none;
+  cursor: pointer;
 
   img {
     height: 50px;
@@ -54,8 +56,11 @@ export const Logo = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin: 10px 0;
+    padding-left: 0;
+
     img {
-      height: 40px;
+      height: 30px;
     }
 
     h1 {
@@ -134,6 +139,8 @@ export const MobileMenuButton = styled.button`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: block;
+    padding-right: 20px;
+    color: #ffffff;
   }
 `;
 
@@ -145,7 +152,7 @@ export const MobileMenu = styled.div`
   width: 80%;
   max-width: 300px;
   height: 100vh;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: #ffffff;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
   transition: right ${({ theme }) => theme.transitions.normal};
   z-index: 1001;
@@ -160,16 +167,16 @@ export const MobileMenuHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.md};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
 
   h2 {
-    font-size: ${({ theme }) => theme.fontSize.lg};
-    color: ${({ theme }) => theme.colors.heading};
+    font-size: 20px;
+    color: #1a1a1a;
     margin: 0;
 
     span {
-      color: ${({ theme }) => theme.colors.primary};
+      color: #cc0000;
     }
   }
 `;
@@ -178,40 +185,40 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.sm};
-  color: ${({ theme }) => theme.colors.heading};
-  transition: color ${({ theme }) => theme.transitions.fast};
+  padding: 8px;
+  color: #1a1a1a;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: #cc0000;
   }
 `;
 
 export const MobileNavList = styled.ul`
-  padding: ${({ theme }) => theme.spacing.md} 0;
+  padding: 20px 0;
+  list-style: none;
+  margin: 0;
 `;
 
 export const MobileNavItem = styled.li`
   a {
     display: block;
-    padding: ${({ theme }) => theme.spacing.md}
-      ${({ theme }) => theme.spacing.lg};
+    padding: 16px 24px;
     text-decoration: none;
-    color: ${({ theme }) => theme.colors.paragraph};
-    font-weight: ${({ theme }) => theme.fontWeight.medium};
-    transition:
-      background-color ${({ theme }) => theme.transitions.fast},
-      color ${({ theme }) => theme.transitions.fast};
+    color: #1a1a1a;
+    font-weight: 500;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.background};
-      color: ${({ theme }) => theme.colors.primary};
+      background-color: #f5f5f5;
+      color: #cc0000;
     }
 
     &.active {
-      background-color: ${({ theme }) => theme.colors.background};
-      color: ${({ theme }) => theme.colors.primary};
-      border-left: 3px solid ${({ theme }) => theme.colors.primary};
+      background-color: #f5f5f5;
+      color: #cc0000;
+      border-left: 3px solid #cc0000;
     }
   }
 `;
@@ -224,7 +231,7 @@ export const Overlay = styled.div`
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 1000;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;

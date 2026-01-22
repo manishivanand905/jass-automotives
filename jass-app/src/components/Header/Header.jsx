@@ -25,7 +25,8 @@ const Header = () => {
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/") setActiveLink("home");
-    else if (path === "/services" || path.startsWith("/services/")) setActiveLink("services");
+    else if (path === "/services" || path.startsWith("/services/"))
+      setActiveLink("services");
     else if (path === "/contact") setActiveLink("contact");
     else setActiveLink(""); // No active link for other pages
   }, []);
@@ -33,6 +34,7 @@ const Header = () => {
   const navLinks = [
     { id: "home", label: "Home", path: "/" },
     { id: "services", label: "Services", path: "/services" },
+    { id: "products", label: "Products", path: "/products" },
     { id: "contact", label: "Contact", path: "/contact" },
   ];
 
@@ -78,11 +80,8 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <HeaderContainer>
-          <Logo>
+          <Logo href="/">
             <img src="/jass-logo.png" alt="Jass Automotives Logo" />
-            {/* <h1>
-              Jass <span>Automotives</span>
-            </h1> */}
           </Logo>
 
           {/* Desktop Navigation */}
@@ -136,6 +135,11 @@ const Header = () => {
               </a>
             </MobileNavItem>
           ))}
+          <MobileNavItem>
+            <a href="/book-service" onClick={closeMobileMenu}>
+              Book a Service
+            </a>
+          </MobileNavItem>
         </MobileNavList>
       </MobileMenu>
     </>

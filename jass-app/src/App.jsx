@@ -9,6 +9,8 @@ import Services from "./pages/Services/Services";
 import ServiceDetail from "./pages/ServiceDetail/ServiceDetail";
 import Products from "./pages/Products/Products";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import ContactPage from "./pages/ContactPage/ContactPage";
+import BookService from "./pages/BookService/BookService";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/book-service" element={<BookService />} />
         </Routes>
       </Router>
     </ThemeProvider>

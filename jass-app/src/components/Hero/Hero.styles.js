@@ -36,6 +36,10 @@ export const HeroSection = styled.section`
   width: 100%;
   height: 100vh;
   overflow: hidden;
+
+  @media (max-width: 565px) {
+    height: 80vh;
+  }
 `;
 
 export const HeroBackground = styled.div`
@@ -73,8 +77,9 @@ export const HeroContent = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 0 20px 40px;
+    align-items: start;
+    justify-content: end;
+    padding: 0 20px 70px;
   }
 `;
 
@@ -84,6 +89,7 @@ export const LeftContent = styled.div`
 
   @media (max-width: 900px) {
     padding-left: 0;
+    text-align: start;
   }
 `;
 
@@ -120,10 +126,10 @@ export const RightContent = styled.div`
   justify-content: center;
 
   @media (max-width: 900px) {
-    text-align: left;
-    margin-top: 20px;
+    text-align: center;
+    margin-top: 60px;
     padding-right: 0;
-    align-items: flex-start;
+    align-items: start;
   }
 `;
 

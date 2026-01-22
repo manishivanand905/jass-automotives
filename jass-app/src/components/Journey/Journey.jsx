@@ -1,4 +1,5 @@
 import React from "react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import {
   JourneyWrapper,
   ImageContainer,
@@ -12,8 +13,10 @@ import {
 } from "./Journey.styles";
 
 const Journey = ({ carImage }) => {
+  const [ref, isVisible] = useScrollAnimation();
+
   return (
-    <JourneyWrapper>
+    <JourneyWrapper ref={ref} $isVisible={isVisible}>
       <ImageContainer>
         <CarImage
           src={carImage || `${process.env.PUBLIC_URL}/hero-bg.jpg`}

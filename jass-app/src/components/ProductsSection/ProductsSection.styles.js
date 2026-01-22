@@ -4,6 +4,10 @@ export const ProductsSectionWrapper = styled.section`
   width: 100%;
   background-color: #292929;
   padding: 80px 0;
+  opacity: ${props => props.$isVisible ? 1 : 0};
+  filter: blur(${props => props.$isVisible ? '0px' : '10px'});
+  transform: translateY(${props => props.$isVisible ? '0' : '30px'});
+  transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 768px) {
     padding: 60px 0;
@@ -37,7 +41,8 @@ export const ProductsContent = styled.div`
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -54,11 +59,12 @@ export const ProductsTitle = styled.h2`
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 32px;
+    font-size: 28px;
+    text-align: center;
   }
 
   @media (max-width: 576px) {
-    font-size: 26px;
+    font-size: 24px;
   }
 `;
 
@@ -68,8 +74,14 @@ export const ProductsDescription = styled.p`
   color: #ccc;
   margin: 0;
 
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+  }
+
   @media (max-width: 576px) {
-    font-size: 15px;
+    font-size: 13px;
   }
 `;
 
@@ -80,11 +92,12 @@ export const ProductsImage = styled.img`
   border-radius: 12px;
 
   @media (max-width: 768px) {
-    height: 300px;
+    height: 250px;
+    border-radius: 8px;
   }
 
   @media (max-width: 576px) {
-    height: 250px;
+    height: 200px;
   }
 `;
 
@@ -93,7 +106,7 @@ export const ViewProductsButton = styled.button`
   background-color: #cc0000;
   color: white;
   border: none;
-  border-radius: 0px;
+  border-radius: 2px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -111,5 +124,7 @@ export const ViewProductsButton = styled.button`
   @media (max-width: 576px) {
     width: 100%;
     margin-left: 0;
+    padding: 12px;
+    font-size: 15px;
   }
 `;

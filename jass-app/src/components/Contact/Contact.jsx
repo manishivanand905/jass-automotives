@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import {
   ContactWrapper,
   LeftSection,
@@ -19,6 +20,7 @@ import {
 } from "./Contact.styles";
 
 const Contact = ({ carImage }) => {
+  const [ref, isVisible] = useScrollAnimation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -82,7 +84,7 @@ const Contact = ({ carImage }) => {
   };
 
   return (
-    <ContactWrapper>
+    <ContactWrapper ref={ref} $isVisible={isVisible}>
       <LeftSection>
         <Title>Contact us</Title>
         <Subtitle>

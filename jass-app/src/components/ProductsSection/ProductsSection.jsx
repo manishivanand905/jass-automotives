@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import {
   ProductsSectionWrapper,
   ProductsContainer,
@@ -13,9 +14,10 @@ import {
 
 const ProductsSection = () => {
   const navigate = useNavigate();
+  const [ref, isVisible] = useScrollAnimation();
 
   return (
-    <ProductsSectionWrapper>
+    <ProductsSectionWrapper ref={ref} $isVisible={isVisible}>
       <ProductsContainer>
         <ProductsContent>
           <ProductsText>
