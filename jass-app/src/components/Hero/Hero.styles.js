@@ -38,7 +38,7 @@ export const HeroSection = styled.section`
   overflow: hidden;
 
   @media (max-width: 565px) {
-    height: 80vh;
+    height: 100vh;
   }
 `;
 
