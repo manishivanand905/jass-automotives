@@ -34,7 +34,7 @@ const Footer = () => {
             />
           </LogoSection>
 
-          <div style={{ display: "flex", gap: "30px", flex: 1 }}>
+          <div className="footer-columns-wrapper">
             {/* Menu Column */}
             <FooterColumn>
               <ColumnTitle>Menu</ColumnTitle>
@@ -77,8 +77,8 @@ const Footer = () => {
               </NavList>
             </FooterColumn>
 
-            {/* Contact Column - Shows on Desktop */}
-            <FooterColumn className="contact-desktop">
+            {/* Contact Column */}
+            <FooterColumn className="contact-mobile">
               <ColumnTitle>Contact</ColumnTitle>
               <ContactInfo>
                 <div
@@ -199,13 +199,19 @@ const Footer = () => {
 
       {/* Media Query Styles */}
       <style>{`
-        .contact-desktop {
-          display: block;
+        .footer-columns-wrapper {
+          display: flex;
+          gap: 30px;
+          flex: 1;
         }
         
         @media (max-width: 968px) {
-          .contact-desktop {
-            display: none !important;
+          .footer-columns-wrapper {
+            flex-wrap: wrap;
+          }
+          
+          .contact-mobile {
+            width: 100% !important;
           }
         }
       `}</style>

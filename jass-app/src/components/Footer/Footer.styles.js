@@ -37,12 +37,12 @@ export const FooterContent = styled.div`
   display: flex;
   gap: 60px;
   margin-bottom: 50px;
-  flex-wrap: wrap;
 
   @media (max-width: 968px) {
     flex-direction: column;
-    gap: 45px;
-    margin-bottom: 40px;
+    gap: 0px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
   }
 `;
 
@@ -52,7 +52,11 @@ export const LogoSection = styled.div`
   width: 45%;
 
   @media (max-width: 968px) {
-    width: 100%;
+    width: 75%;
+  }
+
+  @media (max-width: 576px) {
+    width: 75%;
   }
 `;
 
@@ -69,6 +73,17 @@ export const FooterColumn = styled.div`
   flex-direction: column;
   flex: 0 0 auto;
   min-width: 150px;
+
+  @media (max-width: 968px) {
+    padding-left: 0;
+    order: 0;
+    width: auto;
+
+    &.contact-mobile {
+      order: 3;
+      width: 100%;
+    }
+  }
 `;
 
 export const ColumnTitle = styled.h3`
@@ -206,8 +221,13 @@ export const FooterBottom = styled.div`
   flex-direction: column;
   gap: 5px;
 
+  @media (max-width: 968px) {
+    padding-top: 30px;
+    border-top: 1px solid #4a4a4a;
+  }
+
   @media (max-width: 576px) {
-    padding-top: 10px;
+    padding-top: 20px;
     align-items: center;
     text-align: center;
   }

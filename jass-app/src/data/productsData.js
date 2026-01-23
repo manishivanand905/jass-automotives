@@ -25,6 +25,28 @@ export const productsData = [
       finish: "Gloss",
       coverage: "Full front coverage",
     },
+    specOptions: {
+      thickness: [
+        { value: "4.5 mil", priceModifier: -5000 },
+        { value: "6.5 mil", priceModifier: 0 },
+        { value: "8.5 mil", priceModifier: 8000 },
+      ],
+      warranty: [
+        { value: "5 years", priceModifier: -3000 },
+        { value: "7 years", priceModifier: 0 },
+        { value: "10 years", priceModifier: 5000 },
+      ],
+      finish: [
+        { value: "Matte", priceModifier: 0 },
+        { value: "Gloss", priceModifier: 2000 },
+        { value: "Satin", priceModifier: 3000 },
+      ],
+      coverage: [
+        { value: "Front bumper only", priceModifier: -10000 },
+        { value: "Full front coverage", priceModifier: 0 },
+        { value: "Full body coverage", priceModifier: 50000 },
+      ],
+    },
     addons: [
       {
         id: "addon1",
@@ -90,6 +112,28 @@ export const productsData = [
       finish: "Gloss",
       coverage: "Full front coverage",
     },
+    specOptions: {
+      thickness: [
+        { value: "4.5 mil", priceModifier: -4000 },
+        { value: "6.5 mil", priceModifier: 0 },
+        { value: "8 mil", priceModifier: 6000 },
+      ],
+      warranty: [
+        { value: "5 years", priceModifier: -2000 },
+        { value: "6.5 mil", priceModifier: 0 },
+        { value: "10 years", priceModifier: 4000 },
+      ],
+      finish: [
+        { value: "Matte", priceModifier: 0 },
+        { value: "Gloss", priceModifier: 2000 },
+        { value: "Satin", priceModifier: 3000 },
+      ],
+      coverage: [
+        { value: "Front bumper only", priceModifier: -8000 },
+        { value: "Full front coverage", priceModifier: 0 },
+        { value: "Full body coverage", priceModifier: 45000 },
+      ],
+    },
     addons: [
       {
         id: "addon1",
@@ -153,6 +197,28 @@ export const productsData = [
       warranty: "10 years",
       finish: "Gloss",
       coverage: "Full front coverage",
+    },
+    specOptions: {
+      thickness: [
+        { value: "4.5 mil", priceModifier: -4500 },
+        { value: "6.5 mil", priceModifier: 0 },
+        { value: "8.5 mil", priceModifier: 7000 },
+      ],
+      warranty: [
+        { value: "5 years", priceModifier: -2500 },
+        { value: "7 years", priceModifier: 0 },
+        { value: "10 years", priceModifier: 4500 },
+      ],
+      finish: [
+        { value: "Matte", priceModifier: 0 },
+        { value: "Gloss", priceModifier: 2000 },
+        { value: "Satin", priceModifier: 3000 },
+      ],
+      coverage: [
+        { value: "Front bumper only", priceModifier: -9000 },
+        { value: "Full front coverage", priceModifier: 0 },
+        { value: "Full body coverage", priceModifier: 48000 },
+      ],
     },
     addons: [
       {
@@ -219,6 +285,28 @@ export const productsData = [
       layers: "2 layers",
       thickness: "2 microns",
     },
+    specOptions: {
+      hardness: [
+        { value: "7H", priceModifier: -3000 },
+        { value: "9H", priceModifier: 0 },
+        { value: "10H", priceModifier: 5000 },
+      ],
+      warranty: [
+        { value: "3 years", priceModifier: -2000 },
+        { value: "5 years", priceModifier: 0 },
+        { value: "7 years", priceModifier: 4000 },
+      ],
+      layers: [
+        { value: "1 layer", priceModifier: -4000 },
+        { value: "2 layers", priceModifier: 0 },
+        { value: "3 layers", priceModifier: 6000 },
+      ],
+      thickness: [
+        { value: "1 micron", priceModifier: -2000 },
+        { value: "2 microns", priceModifier: 0 },
+        { value: "3 microns", priceModifier: 3000 },
+      ],
+    },
     addons: [
       {
         id: "addon1",
@@ -283,6 +371,28 @@ export const productsData = [
       layers: "3 layers",
       thickness: "3 microns",
     },
+    specOptions: {
+      hardness: [
+        { value: "7H", priceModifier: -4000 },
+        { value: "9H", priceModifier: 0 },
+        { value: "10H", priceModifier: 6000 },
+      ],
+      warranty: [
+        { value: "3 years", priceModifier: -3000 },
+        { value: "5 years", priceModifier: 0 },
+        { value: "7 years", priceModifier: 5000 },
+      ],
+      layers: [
+        { value: "1 layer", priceModifier: -5000 },
+        { value: "2 layers", priceModifier: 0 },
+        { value: "3 layers", priceModifier: 7000 },
+      ],
+      thickness: [
+        { value: "1 micron", priceModifier: -3000 },
+        { value: "2 microns", priceModifier: 0 },
+        { value: "3 microns", priceModifier: 4000 },
+      ],
+    },
     addons: [
       {
         id: "addon1",
@@ -346,6 +456,28 @@ export const productsData = [
       warranty: "8 years",
       layers: "3 layers + top coat",
       thickness: "3.5 microns",
+    },
+    specOptions: {
+      hardness: [
+        { value: "7H", priceModifier: -5000 },
+        { value: "9H", priceModifier: 0 },
+        { value: "10H", priceModifier: 7000 },
+      ],
+      warranty: [
+        { value: "3 years", priceModifier: -4000 },
+        { value: "5 years", priceModifier: 0 },
+        { value: "8 years", priceModifier: 6000 },
+      ],
+      layers: [
+        { value: "1 layer", priceModifier: -6000 },
+        { value: "2 layers", priceModifier: 0 },
+        { value: "3 layers + top coat", priceModifier: 8000 },
+      ],
+      thickness: [
+        { value: "1 micron", priceModifier: -4000 },
+        { value: "2 microns", priceModifier: 0 },
+        { value: "3.5 microns", priceModifier: 5000 },
+      ],
     },
     addons: [
       {

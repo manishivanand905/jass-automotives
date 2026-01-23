@@ -47,10 +47,18 @@ const ProductDetail = () => {
   const product = productsData.find(p => p.id === parseInt(id));
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [applicationType, setApplicationType] = useState('store');
+  const [selectedSpecs, setSelectedSpecs] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if (product?.specOptions) {
+      const defaultSpecs = {};
+      Object.keys(product.specOptions).forEach(key => {
+        defaultSpecs[key] = product.specifications[key];
+      });
+      setSelectedSpecs(defaultSpecs);
+    }
+  }, [product]);
 
   if (!product) {
     return <div>Product not found</div>;
@@ -66,11 +74,20 @@ const ProductDetail = () => {
 
   const calculateTotal = () => {
     const basePrice = parseInt(product.price.replace(/[₹,]/g, ''));
+    
+    let specsTotal = 0;
+    if (product.specOptions) {
+      Object.keys(product.specOptions).forEach(key => {
+        const option = product.specOptions[key].find(opt => opt.value === selectedSpecs[key]);
+        if (option) specsTotal += option.priceModifier;
+      });
+    }
+    
     const addonsTotal = product.addons
       .filter(addon => selectedAddons.includes(addon.id))
       .reduce((sum, addon) => sum + parseInt(addon.price.replace(/[₹,]/g, '')), 0);
     const applicationFee = applicationType === 'store' ? 20000 : 0;
-    return `₹${(basePrice + addonsTotal + applicationFee).toLocaleString('en-IN')}`;
+    return `₹${(basePrice + specsTotal + addonsTotal + applicationFee).toLocaleString('en-IN')}`;
   };
 
   return (
@@ -105,7 +122,31 @@ const ProductDetail = () => {
               {Object.entries(product.specifications).map(([key, value]) => (
                 <SpecItem key={key}>
                   <SpecLabel>{key.charAt(0).toUpperCase() + key.slice(1)}</SpecLabel>
-                  <SpecValue>{value}</SpecValue>
+                  {product.specOptions && product.specOptions[key] ? (
+                    <select
+                      value={selectedSpecs[key] || value}
+                      onChange={(e) => setSelectedSpecs({...selectedSpecs, [key]: e.target.value})}
+                      style={{
+                        padding: '8px 12px',
+                        backgroundColor: '#292929',
+                        color: 'white',
+                        border: '1px solid #cc0000',
+                        borderRadius: '6px',
+                        fontSize: '15px',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        outline: 'none'
+                      }}
+                    >
+                      {product.specOptions[key].map((option, idx) => (
+                        <option key={idx} value={option.value}>
+                          {option.value} {option.priceModifier !== 0 && `(${option.priceModifier > 0 ? '+' : ''}₹${Math.abs(option.priceModifier).toLocaleString('en-IN')})`}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <SpecValue>{value}</SpecValue>
+                  )}
                 </SpecItem>
               ))}
             </SpecsGrid>

@@ -16,7 +16,7 @@ const Journey = ({ carImage }) => {
   const [ref, isVisible] = useScrollAnimation();
 
   return (
-    <JourneyWrapper ref={ref} $isVisible={isVisible}>
+    <JourneyWrapper ref={ref} $isVisible={isVisible} $bgImage={carImage}>
       <ImageContainer>
         <CarImage
           src={carImage || `${process.env.PUBLIC_URL}/hero-bg.jpg`}

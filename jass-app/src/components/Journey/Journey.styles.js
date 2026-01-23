@@ -20,8 +20,24 @@ export const JourneyWrapper = styled.section`
   transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
 
   @media (max-width: 968px) {
-    flex-direction: column-reverse;
+    flex-direction: column;
     min-height: auto;
+    position: relative;
+    background-image: url(${props => props.$bgImage});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1;
+    }
   }
 `;
 
@@ -32,11 +48,7 @@ export const ImageContainer = styled.div`
   background-color: #000000;
 
   @media (max-width: 968px) {
-    min-height: auto;
-  }
-
-  @media (max-width: 576px) {
-    min-height: auto;
+    display: none;
   }
 `;
 
@@ -69,6 +81,8 @@ export const ContentContainer = styled.div`
   @media (max-width: 968px) {
     padding: 80px 40px;
     align-items: center;
+    background-color: transparent;
+    z-index: 2;
   }
 
   @media (max-width: 576px) {
@@ -127,6 +141,7 @@ export const Title = styled.h2`
     font-size: 40px;
     margin-bottom: 35px;
     text-align: center;
+    color: #ffffff;
   }
 
   @media (max-width: 576px) {
@@ -161,6 +176,7 @@ export const Paragraph = styled.p`
   @media (max-width: 968px) {
     text-align: center;
     font-size: 15.5px;
+    color: #ffffff;
   }
 
   @media (max-width: 576px) {
