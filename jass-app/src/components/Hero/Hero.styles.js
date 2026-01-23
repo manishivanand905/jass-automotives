@@ -110,7 +110,7 @@ export const BigTitle = styled.h1`
   }
 
   @media (max-width: 900px) {
-    font-size: 64px;
+    font-size: 62px;
   }
 `;
 
@@ -141,7 +141,7 @@ export const Tagline = styled.p`
   text-align: justify;
 
   @media (max-width: 900px) {
-    font-size: 16px;
+    font-size: 14px;
   }
 `;
 
@@ -157,5 +157,9 @@ export const CTAButton = styled.a`
   &:hover {
     color: #c90000;
     border-color: #c90000;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 13px;
   }
 `;

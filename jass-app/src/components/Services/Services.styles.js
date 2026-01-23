@@ -1,15 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-const float = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+import styled from "styled-components";
 
 export const ServicesWrapper = styled.section`
   width: 100%;
@@ -106,7 +95,7 @@ export const RightContent = styled.div`
   padding-right: 40px;
 
   @media (max-width: 968px) {
-    align-items: flex-start;
+    align-items: flex-end;
     max-width: 100%;
     padding-top: 0;
     padding-right: 0;

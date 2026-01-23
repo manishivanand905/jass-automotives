@@ -1,15 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-const glideUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+import styled from "styled-components";
 
 export const TestimonialsSection = styled.section`
   background-color: #2d2d2d;
