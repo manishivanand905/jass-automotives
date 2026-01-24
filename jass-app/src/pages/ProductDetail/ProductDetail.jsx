@@ -48,13 +48,15 @@ const ProductDetail = () => {
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [applicationType, setApplicationType] = useState('store');
   const [selectedSpecs, setSelectedSpecs] = useState({});
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (product?.specOptions) {
       const defaultSpecs = {};
       Object.keys(product.specOptions).forEach(key => {
-        defaultSpecs[key] = product.specifications[key];
+        const zeroOption = product.specOptions[key].find(opt => opt.priceModifier === 0);
+        defaultSpecs[key] = zeroOption ? zeroOption.value : product.specifications[key];
       });
       setSelectedSpecs(defaultSpecs);
     }
@@ -126,8 +128,10 @@ const ProductDetail = () => {
                     <select
                       value={selectedSpecs[key] || value}
                       onChange={(e) => setSelectedSpecs({...selectedSpecs, [key]: e.target.value})}
+                      onFocus={() => setOpenDropdown(key)}
+                      onBlur={() => setOpenDropdown(null)}
                       style={{
-                        padding: '8px 12px',
+                        padding: '8px 28px 8px 12px',
                         backgroundColor: '#292929',
                         color: 'white',
                         border: '1px solid #cc0000',
@@ -135,12 +139,15 @@ const ProductDetail = () => {
                         fontSize: '15px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        outline: 'none'
+                        outline: 'none',
+                        maxWidth: '100%',
+                        width: 'auto'
                       }}
+                      className="spec-select"
                     >
                       {product.specOptions[key].map((option, idx) => (
                         <option key={idx} value={option.value}>
-                          {option.value} {option.priceModifier !== 0 && `(${option.priceModifier > 0 ? '+' : ''}₹${Math.abs(option.priceModifier).toLocaleString('en-IN')})`}
+                          {option.value}{openDropdown === key && option.priceModifier !== 0 ? ` (${option.priceModifier > 0 ? '+' : ''}₹${Math.abs(option.priceModifier).toLocaleString('en-IN')})` : ''}
                         </option>
                       ))}
                     </select>
@@ -221,6 +228,21 @@ const ProductDetail = () => {
           </BookingSection>
         </ProductDetailContainer>
       </ProductDetailWrapper>
+      
+      <style>{`
+        @media (max-width: 576px) {
+          .spec-select {
+            font-size: 13px !important;
+            padding: 6px 28px 6px 8px !important;
+            max-width: calc(100% - 10px) !important;
+            line-height: 1.2 !important;
+          }
+          .spec-select option {
+            padding: 4px !important;
+          }
+        }
+      `}</style>
+      
       <Contact carImage={process.env.PUBLIC_URL + "/detailing-coating-car.jpg"} />
       <Footer />
     </>

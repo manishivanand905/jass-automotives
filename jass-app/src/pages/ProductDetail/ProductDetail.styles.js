@@ -167,6 +167,10 @@ export const SpecItem = styled.div`
   padding: 15px;
   background-color: #292929;
   border-radius: 8px;
+
+  @media (max-width: 576px) {
+    padding: 15px 20px 15px 15px;
+  }
 `;
 
 export const SpecLabel = styled.span`
