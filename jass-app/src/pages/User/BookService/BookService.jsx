@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { servicesData } from '../../data/servicesData';
-import { locationsData } from '../../data/locationsData';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { servicesData } from '../../../data/servicesData';
+import { locationsData } from '../../../data/locationsData';
+import { PageTransition } from '../../../components/AnimatedWrapper';
+import Header from '../../../components/Header/Header';
+import Footer from '../../../components/Footer/Footer';
 import {
   BookServiceWrapper,
   HeroSection,
@@ -28,24 +30,9 @@ import {
 } from './BookService.styles';
 
 const BookService = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    carMake: '',
-    carModel: '',
-    carYear: '',
-    location: '',
-    preferredDate: '',
-    preferredTime: '',
-    message: ''
-  });
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [selectedServices, setSelectedServices] = React.useState([]);
+  const [submitted, setSubmitted] = React.useState(false);
+  const { register, handleSubmit, reset } = useForm();
 
   const handleServiceToggle = (serviceId) => {
     setSelectedServices(prev =>
@@ -55,30 +42,18 @@ const BookService = () => {
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Booking submitted:', { ...formData, services: selectedServices });
+  const onSubmit = (data) => {
+    console.log('Booking submitted:', { ...data, services: selectedServices });
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        carMake: '',
-        carModel: '',
-        carYear: '',
-        location: '',
-        preferredDate: '',
-        preferredTime: '',
-        message: ''
-      });
+      reset();
       setSelectedServices([]);
     }, 3000);
   };
 
   return (
-    <>
+    <PageTransition>
       <Header />
       <BookServiceWrapper>
         <HeroSection>
@@ -96,26 +71,20 @@ const BookService = () => {
                 </SuccessMessage>
               )}
 
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormRow>
                   <FormGroup>
                     <Label>Your Name *</Label>
                     <Input
                       type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
+                      {...register("name", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Email *</Label>
                     <Input
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
+                      {...register("email", { required: true })}
                     />
                   </FormGroup>
                 </FormRow>
@@ -125,19 +94,13 @@ const BookService = () => {
                     <Label>Phone Number *</Label>
                     <Input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
+                      {...register("phone", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Location *</Label>
                     <Select
-                      name="location"
-                      value={formData.location}
-                      onChange={handleChange}
-                      required
+                      {...register("location", { required: true })}
                     >
                       <option value="">Select location</option>
                       {locationsData.map((loc) => (
@@ -154,22 +117,16 @@ const BookService = () => {
                     <Label>Car Make *</Label>
                     <Input
                       type="text"
-                      name="carMake"
                       placeholder="e.g., Toyota, Honda"
-                      value={formData.carMake}
-                      onChange={handleChange}
-                      required
+                      {...register("carMake", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Car Model *</Label>
                     <Input
                       type="text"
-                      name="carModel"
                       placeholder="e.g., Camry, Civic"
-                      value={formData.carModel}
-                      onChange={handleChange}
-                      required
+                      {...register("carModel", { required: true })}
                     />
                   </FormGroup>
                 </FormRow>
@@ -179,20 +136,15 @@ const BookService = () => {
                     <Label>Car Year</Label>
                     <Input
                       type="text"
-                      name="carYear"
                       placeholder="e.g., 2020"
-                      value={formData.carYear}
-                      onChange={handleChange}
+                      {...register("carYear")}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Preferred Date *</Label>
                     <Input
                       type="date"
-                      name="preferredDate"
-                      value={formData.preferredDate}
-                      onChange={handleChange}
-                      required
+                      {...register("preferredDate", { required: true })}
                     />
                   </FormGroup>
                 </FormRow>
@@ -201,10 +153,7 @@ const BookService = () => {
                   <FormGroup>
                     <Label>Preferred Time *</Label>
                     <Select
-                      name="preferredTime"
-                      value={formData.preferredTime}
-                      onChange={handleChange}
-                      required
+                      {...register("preferredTime", { required: true })}
                     >
                       <option value="">Select time</option>
                       <option value="10:00 AM">10:00 AM</option>
@@ -243,11 +192,9 @@ const BookService = () => {
                 <FormGroup>
                   <Label>Additional Notes</Label>
                   <TextArea
-                    name="message"
                     placeholder="Any specific requirements or concerns..."
-                    value={formData.message}
-                    onChange={handleChange}
                     rows="4"
+                    {...register("message")}
                   />
                 </FormGroup>
 
@@ -260,7 +207,7 @@ const BookService = () => {
         </ContentSection>
       </BookServiceWrapper>
       <Footer />
-    </>
+    </PageTransition>
   );
 };
 

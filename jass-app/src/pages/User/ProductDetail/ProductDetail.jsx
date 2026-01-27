@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { productsData } from '../../data/productsData';
-import Header from '../../components/Header/Header';
-import Contact from '../../components/Contact/Contact';
-import Footer from '../../components/Footer/Footer';
+import { productsData } from '../../../data/productsData';
+import { PageTransition } from '../../../components/AnimatedWrapper';
+import Header from '../../../components/Header/Header';
+import Contact from '../../../components/Contact/Contact';
+import Footer from '../../../components/Footer/Footer';
 import {
   ProductDetailWrapper,
   ProductDetailContainer,
@@ -93,7 +94,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <>
+    <PageTransition>
       <Header />
       <ProductDetailWrapper>
         <ProductDetailContainer>
@@ -245,7 +246,7 @@ const ProductDetail = () => {
       
       <Contact carImage={process.env.PUBLIC_URL + "/detailing-coating-car.jpg"} />
       <Footer />
-    </>
+    </PageTransition>
   );
 };
 

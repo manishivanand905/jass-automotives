@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { locationsData } from '../../data/locationsData';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { locationsData } from '../../../data/locationsData';
+import { PageTransition } from '../../../components/AnimatedWrapper';
+import Header from '../../../components/Header/Header';
+import Footer from '../../../components/Footer/Footer';
 import {
   ContactPageWrapper,
   HeroSection,
@@ -31,31 +33,17 @@ import {
 } from './ContactPage.styles';
 
 const ContactPage = () => {
-  const [selectedLocation, setSelectedLocation] = useState(locationsData[0]);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: '',
-    carMake: '',
-    carModel: '',
-    carColor: '',
-    location: ''
-  });
+  const [selectedLocation, setSelectedLocation] = React.useState(locationsData[0]);
+  const { register, handleSubmit, reset } = useForm();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
+  const onSubmit = (data) => {
+    console.log('Form submitted:', data);
     alert('Thank you! We will contact you soon.');
+    reset();
   };
 
   return (
-    <>
+    <PageTransition>
       <Header />
       <ContactPageWrapper>
         <HeroSection>
@@ -115,26 +103,20 @@ const ContactPage = () => {
 
             <FormSection>
               <FormTitle>Get in Touch</FormTitle>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormRow>
                   <FormGroup>
                     <Label>Your Name *</Label>
                     <Input
                       type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
+                      {...register("name", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Your E-mail *</Label>
                     <Input
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
+                      {...register("email", { required: true })}
                     />
                   </FormGroup>
                 </FormRow>
@@ -144,19 +126,13 @@ const ContactPage = () => {
                     <Label>Phone No *</Label>
                     <Input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
+                      {...register("phone", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Select Your Service *</Label>
                     <Select
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      required
+                      {...register("service", { required: true })}
                     >
                       <option value="">Select a service</option>
                       <option value="detailing">Detailing</option>
@@ -171,10 +147,8 @@ const ContactPage = () => {
                 <FormGroup>
                   <Label>Your Message</Label>
                   <TextArea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
                     rows="4"
+                    {...register("message")}
                   />
                 </FormGroup>
 
@@ -183,20 +157,14 @@ const ContactPage = () => {
                     <Label>Car Make *</Label>
                     <Input
                       type="text"
-                      name="carMake"
-                      value={formData.carMake}
-                      onChange={handleChange}
-                      required
+                      {...register("carMake", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Car Model *</Label>
                     <Input
                       type="text"
-                      name="carModel"
-                      value={formData.carModel}
-                      onChange={handleChange}
-                      required
+                      {...register("carModel", { required: true })}
                     />
                   </FormGroup>
                 </FormRow>
@@ -206,19 +174,13 @@ const ContactPage = () => {
                     <Label>Car Color *</Label>
                     <Input
                       type="text"
-                      name="carColor"
-                      value={formData.carColor}
-                      onChange={handleChange}
-                      required
+                      {...register("carColor", { required: true })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label>Your Location *</Label>
                     <Select
-                      name="location"
-                      value={formData.location}
-                      onChange={handleChange}
-                      required
+                      {...register("location", { required: true })}
                     >
                       <option value="">Select location</option>
                       {locationsData.map((loc) => (
@@ -237,7 +199,7 @@ const ContactPage = () => {
         </ContentSection>
       </ContactPageWrapper>
       <Footer />
-    </>
+    </PageTransition>
   );
 };
 

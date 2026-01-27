@@ -238,26 +238,122 @@ export const Overlay = styled.div`
   }
 `;
 
-export const BookButton = styled.a`
-  padding: 10px 20px;
-  background-color: #cc0000;
+export const ProfileOverlay = styled.div`
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
+
+export const AuthButton = styled.button`
+  padding: 10px;
+  background-color: transparent;
   color: #ffffff;
-  text-decoration: none;
+  border: 1px solid #cc0000;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  border-radius: 0px;
+  border-radius: 6px;
   height: 38px;
+  width: 38px;
   transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
 
   &:hover {
-    background-color: #ff4444;
+    background-color: #cc0000;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: none;
+    height: 32px;
+    width: 32px;
+    margin-right: 10px;
+    display: flex;
+  }
+`;
+
+export const ProfileDropdown = styled.div`
+  position: absolute;
+  top: 50px;
+  right: 30px;
+  width: 280px;
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    position: fixed;
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    top: 60px;
+    right: 5px;
+    left: 5px;
+  }
+`;
+
+export const ProfileHeader = styled.div`
+  padding: 20px;
+  background: #292929;
+  border-bottom: 1px solid #4a4a4a;
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px;
+
+    h3 {
+      font-size: 16px;
+    }
+  }
+`;
+
+export const ProfileInfo = styled.p`
+  margin: 6px 0;
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.4;
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
+`;
+
+export const ProfileMenu = styled.div`
+  padding: 8px 0;
+`;
+
+export const ProfileMenuItem = styled.div`
+  padding: 12px 20px;
+  font-size: 15px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #292929;
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px 16px;
+    font-size: 14px;
   }
 `;

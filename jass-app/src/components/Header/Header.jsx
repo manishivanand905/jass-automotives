@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { FaUser } from "react-icons/fa";
 import {
   HeaderWrapper,
   HeaderContainer,
@@ -7,7 +9,6 @@ import {
   Nav,
   NavList,
   NavItem,
-  BookButton,
   MobileMenuButton,
   MobileMenu,
   MobileMenuHeader,
@@ -15,11 +16,43 @@ import {
   MobileNavList,
   MobileNavItem,
   Overlay,
+  AuthButton,
+  ProfileDropdown,
+  ProfileHeader,
+  ProfileInfo,
+  ProfileMenu,
+  ProfileMenuItem,
+  ProfileOverlay,
 } from "./Header.styles";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("home");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuth = () => {
+      const auth = localStorage.getItem('isAuthenticated') === 'true';
+      const role = localStorage.getItem('userRole');
+      setIsAuthenticated(auth);
+      setUserRole(role);
+      
+      if (auth && role === 'user') {
+        const storedUserData = localStorage.getItem('userData');
+        if (storedUserData) {
+          setUserData(JSON.parse(storedUserData));
+        }
+      }
+    };
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
 
   // Set active link based on current path
   useEffect(() => {
@@ -36,6 +69,7 @@ const Header = () => {
     { id: "services", label: "Services", path: "/services" },
     { id: "products", label: "Products", path: "/products" },
     { id: "contact", label: "Contact", path: "/contact" },
+    { id: "book-service", label: "Book a Service", path: "/book-service" },
   ];
 
   const toggleMobileMenu = () => {
@@ -50,6 +84,57 @@ const Header = () => {
     setActiveLink(linkId);
     closeMobileMenu();
   };
+
+  const handleAuthClick = () => {
+    if (isAuthenticated && userRole === 'user') {
+      setShowProfileDropdown(!showProfileDropdown);
+      setIsMobileMenuOpen(false);
+    } else if (isAuthenticated) {
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userRole');
+      setIsAuthenticated(false);
+      setUserRole(null);
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userData');
+    setIsAuthenticated(false);
+    setUserRole(null);
+    setShowProfileDropdown(false);
+    navigate('/');
+    closeMobileMenu();
+  };
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showProfileDropdown && !event.target.closest('.profile-dropdown') && !event.target.closest('.auth-button')) {
+        setShowProfileDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileDropdown]);
+
+  // Prevent body scroll when profile dropdown is open on mobile
+  useEffect(() => {
+    if (showProfileDropdown && window.innerWidth <= 768) {
+      document.body.style.overflow = "hidden";
+    } else if (!isMobileMenuOpen) {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      if (!isMobileMenuOpen) {
+        document.body.style.overflow = "unset";
+      }
+    };
+  }, [showProfileDropdown, isMobileMenuOpen]);
 
   // Close mobile menu on window resize
   useEffect(() => {
@@ -98,7 +183,9 @@ const Header = () => {
                   </a>
                 </NavItem>
               ))}
-              <BookButton href="/book-service">Book a service</BookButton>
+              <AuthButton onClick={handleAuthClick} className="auth-button" title={isAuthenticated ? (userRole === 'user' ? 'Profile' : 'Logout') : 'Login'}>
+                <FaUser size={18} />
+              </AuthButton>
             </NavList>
           </Nav>
 
@@ -111,6 +198,27 @@ const Header = () => {
 
       {/* Mobile Menu Overlay */}
       <Overlay $isOpen={isMobileMenuOpen} onClick={closeMobileMenu} />
+
+      {/* Profile Dropdown Overlay */}
+      <ProfileOverlay $isOpen={showProfileDropdown} onClick={() => setShowProfileDropdown(false)} />
+
+      {/* Profile Dropdown */}
+      {isAuthenticated && userRole === 'user' && showProfileDropdown && (
+        <ProfileDropdown className="profile-dropdown">
+          <ProfileHeader>
+            <h3>Hi, {userData.name}</h3>
+            <ProfileInfo>{userData.email}</ProfileInfo>
+            <ProfileInfo>{userData.phone}</ProfileInfo>
+          </ProfileHeader>
+          <ProfileMenu>
+            <ProfileMenuItem onClick={() => { setShowProfileDropdown(false); navigate('/addresses'); }}>Addresses</ProfileMenuItem>
+            <ProfileMenuItem onClick={() => { setShowProfileDropdown(false); navigate('/my-orders'); }}>My Orders</ProfileMenuItem>
+            <ProfileMenuItem onClick={() => { setShowProfileDropdown(false); }}>Download Our App</ProfileMenuItem>
+            <ProfileMenuItem onClick={() => { setShowProfileDropdown(false); }}>Help and Support</ProfileMenuItem>
+            <ProfileMenuItem onClick={handleLogout} style={{ color: '#cc0000', borderTop: '1px solid #e0e0e0', paddingTop: '12px', marginTop: '8px' }}>Logout</ProfileMenuItem>
+          </ProfileMenu>
+        </ProfileDropdown>
+      )}
 
       {/* Mobile Menu */}
       <MobileMenu $isOpen={isMobileMenuOpen}>
@@ -135,10 +243,24 @@ const Header = () => {
               </a>
             </MobileNavItem>
           ))}
+          {isAuthenticated && userRole === 'user' && (
+            <>
+              <MobileNavItem>
+                <button onClick={() => { closeMobileMenu(); navigate('/addresses'); }} style={{ cursor: 'pointer', background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: '16px 24px', fontSize: '16px', fontWeight: '500', color: '#1a1a1a' }}>
+                  Addresses
+                </button>
+              </MobileNavItem>
+              <MobileNavItem>
+                <button onClick={() => { closeMobileMenu(); navigate('/my-orders'); }} style={{ cursor: 'pointer', background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: '16px 24px', fontSize: '16px', fontWeight: '500', color: '#1a1a1a' }}>
+                  My Orders
+                </button>
+              </MobileNavItem>
+            </>
+          )}
           <MobileNavItem>
-            <a href="/book-service" onClick={closeMobileMenu}>
-              Book a Service
-            </a>
+            <button onClick={isAuthenticated ? handleLogout : () => { closeMobileMenu(); navigate('/login'); }} style={{ cursor: 'pointer', background: isAuthenticated ? '#cc0000' : 'transparent', border: isAuthenticated ? 'none' : '1px solid #cc0000', width: '140px', height: '32px', textAlign: 'center', padding: '0', fontSize: '14px', fontWeight: '600', color: '#ffffff', transition: 'all 0.3s ease', margin: '8px 24px' }}>
+              {isAuthenticated ? 'Logout' : 'Login'}
+            </button>
           </MobileNavItem>
         </MobileNavList>
       </MobileMenu>

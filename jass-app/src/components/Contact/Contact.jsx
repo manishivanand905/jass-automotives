@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import {
   ContactWrapper,
@@ -21,41 +22,15 @@ import {
 
 const Contact = ({ carImage }) => {
   const [ref, isVisible] = useScrollAnimation();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+  const { register, handleSubmit, formState: { isSubmitting }, reset } = useForm();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // TODO: Replace with your Google Apps Script Web App URL
-    // Instructions:
-    // 1. Go to Google Sheets and create a new spreadsheet
-    // 2. Go to Extensions > Apps Script
-    // 3. Copy the code from the third file below
-    // 4. Deploy as Web App
-    // 5. Copy the deployment URL and replace it here
+  const onSubmit = async (data) => {
     const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
 
     try {
       const response = await fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
@@ -63,23 +38,13 @@ const Contact = ({ carImage }) => {
 
       if (response.ok) {
         alert("Thank you! Your message has been sent successfully.");
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          message: "",
-        });
+        reset();
       } else {
         throw new Error("Failed to send message");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert(
-        "Sorry, there was an error sending your message. Please try again.",
-      );
-    } finally {
-      setIsSubmitting(false);
+      alert("Sorry, there was an error sending your message. Please try again.");
     }
   };
 
@@ -91,7 +56,7 @@ const Contact = ({ carImage }) => {
           This is the space to share the business's contact information.
         </Subtitle>
 
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <FormRow>
             <FormGroup>
               <Label>
@@ -99,11 +64,8 @@ const Contact = ({ carImage }) => {
               </Label>
               <Input
                 type="text"
-                name="firstName"
                 placeholder="Enter your first name"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
+                {...register("firstName", { required: true })}
               />
             </FormGroup>
 
@@ -113,11 +75,8 @@ const Contact = ({ carImage }) => {
               </Label>
               <Input
                 type="text"
-                name="lastName"
                 placeholder="Enter your last name"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
+                {...register("lastName", { required: true })}
               />
             </FormGroup>
           </FormRow>
@@ -129,11 +88,8 @@ const Contact = ({ carImage }) => {
               </Label>
               <Input
                 type="email"
-                name="email"
                 placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
+                {...register("email", { required: true })}
               />
             </FormGroup>
 
@@ -146,10 +102,8 @@ const Contact = ({ carImage }) => {
                 />
                 <PhoneInput
                   type="tel"
-                  name="phone"
                   placeholder="Enter phone number"
-                  value={formData.phone}
-                  onChange={handleChange}
+                  {...register("phone")}
                 />
               </PhoneInputWrapper>
             </FormGroup>
@@ -158,11 +112,9 @@ const Contact = ({ carImage }) => {
           <FormGroup>
             <Label>Message</Label>
             <TextArea
-              name="message"
               placeholder="Give a detailed example"
-              value={formData.message}
-              onChange={handleChange}
               rows="4"
+              {...register("message")}
             />
           </FormGroup>
 

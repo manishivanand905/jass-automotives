@@ -1,4 +1,5 @@
 import React from "react";
+import { FadeIn, SlideIn } from "../AnimatedWrapper";
 import {
   HeroSection,
   HeroBackground,
@@ -20,19 +21,25 @@ const Hero = ({ backgroundImage }) => {
       <HeroContent>
         {/* LEFT TEXT */}
         <LeftContent>
-          <BigTitle>
-            <span className="solid">Jass</span>
-            <span className="outline">Automotive</span>
-          </BigTitle>
+          <SlideIn direction="left" delay={0.2}>
+            <BigTitle>
+              <span className="solid">Jass</span>
+              <span className="outline">Automotive</span>
+            </BigTitle>
+          </SlideIn>
         </LeftContent>
 
         {/* RIGHT TEXT */}
         <RightContent>
-          <Tagline>
-            Premium Auto Care Delivered <br /> with Precision
-          </Tagline>
+          <SlideIn direction="right" delay={0.4}>
+            <Tagline>
+              Premium Auto Care Delivered <br /> with Precision
+            </Tagline>
+          </SlideIn>
 
-          <CTAButton href="/book-online">Get a Quote →</CTAButton>
+          <FadeIn delay={0.6}>
+            <CTAButton href="/book-online">Get a Quote →</CTAButton>
+          </FadeIn>
         </RightContent>
       </HeroContent>
     </HeroSection>
