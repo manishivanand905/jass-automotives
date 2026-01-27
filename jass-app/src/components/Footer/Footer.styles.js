@@ -135,12 +135,15 @@ export const ContactInfo = styled.div`
   gap: 16px;
 `;
 
-export const Address = styled.p`
+export const Address = styled.a`
   font-size: 14px;
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
   display: block;
+  cursor: pointer;
+  pointer-events: auto;
+  line-height: 1.6;
 
   &:hover {
     color: #cc0000;
@@ -151,12 +154,14 @@ export const Address = styled.p`
   }
 `;
 
-export const ContactDetail = styled.p`
+export const ContactDetail = styled.a`
   font-size: 14px;
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
   display: block;
+  cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     color: #cc0000;
@@ -173,6 +178,8 @@ export const Phone = styled.a`
   text-decoration: none;
   transition: color 0.3s ease;
   display: block;
+  cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     color: #cc0000;
@@ -197,6 +204,7 @@ export const SocialIcon = styled.a`
     transform 0.3s ease,
     opacity 0.3s ease;
   cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     transform: scale(1.1);
@@ -206,6 +214,7 @@ export const SocialIcon = styled.a`
   svg {
     width: 25px;
     height: 25px;
+    pointer-events: none;
   }
 
   @media (max-width: 576px) {

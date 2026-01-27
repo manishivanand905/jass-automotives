@@ -81,11 +81,16 @@ const Footer = () => {
             <FooterColumn className="contact-mobile">
               <ColumnTitle>Contact</ColumnTitle>
               <ContactInfo>
-                <div
+                <a
+                  href="https://maps.google.com/?q=Door+No.15,+31-XV-82/1,+Kaithalapur,+KPHB+15th+Phase,+Kukatpally,+Hyderabad,+Telangana+500085"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     display: "flex",
                     gap: "10px",
                     alignItems: "flex-start",
+                    textDecoration: "none",
+                    color: "inherit",
                   }}
                 >
                   <svg
@@ -95,17 +100,21 @@ const Footer = () => {
                     fill="none"
                     stroke="#ffffff"
                     strokeWidth="2"
+                    style={{ flexShrink: 0 }}
                   >
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
-                  <Address>
-                    Under Kaithalapur flyover, <br />
-                    Kukkatpally phase 15, Hyderabad
+                  <Address as="span">
+                    Autonation India Pvt Ltd<br />
+                    Door No.15, 31-XV-82/1, Kaithalapur,<br />
+                    KPHB 15th Phase, Kukatpally,<br />
+                    Hyderabad, Telangana 500085
                   </Address>
-                </div>
-                <div
-                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
+                </a>
+                <a
+                  href="mailto:jassautomotives@gmail.com"
+                  style={{ display: "flex", gap: "10px", alignItems: "center", textDecoration: "none", color: "inherit" }}
                 >
                   <svg
                     width="20"
@@ -114,14 +123,16 @@ const Footer = () => {
                     fill="none"
                     stroke="#ffffff"
                     strokeWidth="2"
+                    style={{ flexShrink: 0 }}
                   >
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
-                  <ContactDetail>@Autonation India pvt.ltd.</ContactDetail>
-                </div>
-                <div
-                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
+                  <ContactDetail as="span">jassautomotives@gmail.com</ContactDetail>
+                </a>
+                <a
+                  href="tel:+919030764455"
+                  style={{ display: "flex", gap: "10px", alignItems: "center", textDecoration: "none", color: "inherit" }}
                 >
                   <svg
                     width="20"
@@ -130,14 +141,15 @@ const Footer = () => {
                     fill="none"
                     stroke="#ffffff"
                     strokeWidth="2"
+                    style={{ flexShrink: 0 }}
                   >
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                   </svg>
-                  <Phone href="tel:+919030764455">+91 9030764455</Phone>
-                </div>
+                  <Phone as="span">9030764455</Phone>
+                </a>
                 <SocialIcons>
                   <SocialIcon
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/jass_automotives/"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram"
