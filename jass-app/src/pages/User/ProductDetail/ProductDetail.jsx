@@ -244,7 +244,7 @@ const ProductDetail = () => {
         }
       `}</style>
       
-      <Contact carImage={process.env.PUBLIC_URL + "/detailing-coating-car.jpg"} />
+      <Contact carImage={process.env.PUBLIC_URL + "/Images/detailing-coating-car.jpg"} />
       <Footer />
     </PageTransition>
   );

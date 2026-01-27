@@ -133,7 +133,7 @@ const Services = () => {
         </ServicesContainer>
       </ServicesWrapper>
       <Contact
-        carImage={process.env.PUBLIC_URL + "/detailing-coating-car.jpg"}
+        carImage={process.env.PUBLIC_URL + "/Images/detailing-coating-car.jpg"}
       />
       <Footer />
     </PageTransition>

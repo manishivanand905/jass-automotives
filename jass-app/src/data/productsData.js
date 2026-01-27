@@ -6,7 +6,7 @@ export const productsData = [
     brand: "XPEL",
     category: "PPF",
     logo: "/logos/xpel-logo.png",
-    image: "/xpel-ppf.jpg",
+    image: "/Images/xpel-ppf.jpg",
     description:
       "Self-healing paint protection film with superior clarity and durability. Industry-leading 10-year warranty.",
     price: "₹45,000",
@@ -93,7 +93,7 @@ export const productsData = [
     brand: "3M",
     category: "PPF",
     logo: "/logos/3m-logo.png",
-    image: "/3m-ppf.jpg",
+    image: "/Images/3m-ppf.jpg",
     description:
       "Premium paint protection with advanced self-healing properties and exceptional gloss retention.",
     price: "₹42,000",
@@ -179,7 +179,7 @@ export const productsData = [
     brand: "LLumar",
     category: "PPF",
     logo: "/logos/llumar-logo.png",
-    image: "/llumar-ppf.jpg",
+    image: "/Images/llumar-ppf.jpg",
     description:
       "High-performance paint protection film with self-healing technology and superior impact resistance.",
     price: "₹40,000",
@@ -266,7 +266,7 @@ export const productsData = [
     brand: "3M",
     category: "Ceramic Coating",
     logo: "/logos/3m-logo.png",
-    image: "/3m-ceramic.jpg",
+    image: "/Images/3m-ceramic.jpg",
     description:
       "Professional-grade ceramic coating with 5-year durability and exceptional hydrophobic properties.",
     price: "₹25,000",
@@ -352,7 +352,7 @@ export const productsData = [
     brand: "Kovalent Coatings",
     category: "Ceramic Coating",
     logo: "/logos/kovalent-logo.png",
-    image: "/kovalent-ceramic.jpg",
+    image: "/Images/kovalent-ceramic.jpg",
     description:
       "Advanced SiO2 ceramic coating with superior gloss enhancement and 7-year durability.",
     price: "₹28,000",
@@ -438,7 +438,7 @@ export const productsData = [
     brand: "System X",
     category: "Ceramic Coating",
     logo: "/logos/systemx-logo.png",
-    image: "/systemx-ceramic.jpg",
+    image: "/Images/systemx-ceramic.jpg",
     description:
       "Professional ceramic coating system with maximum durability and unmatched gloss depth.",
     price: "₹30,000",

@@ -3,7 +3,7 @@ export const servicesData = [
     id: 1,
     title: "Full Vehicle Diagnostics",
     category: "Repair",
-    image: "/diagnostics.jpg",
+    image: "/Images/diagnostics.jpg",
     description:
       "Get a complete health check of your vehicle using cutting-edge diagnostic tools.",
     review:
@@ -25,7 +25,7 @@ export const servicesData = [
     id: 2,
     title: "Engine Repair and Overhaul",
     category: "Repair",
-    image: "/engine-repair.jpg",
+    image: "/Images/engine-repair.jpg",
     description:
       "Restore your vehicle's power and performance with expert engine repairs.",
     review:
@@ -47,7 +47,7 @@ export const servicesData = [
     id: 3,
     title: "Brake Services",
     category: "Repair",
-    image: "/brake-service.jpg",
+    image: "/Images/brake-service.jpg",
     description:
       "Experience safer drives with professional brake inspection and repair services.",
     review: "Brakes feel brand new. Quick service and excellent workmanship.",
@@ -68,7 +68,7 @@ export const servicesData = [
     id: 4,
     title: "Car Washing",
     category: "Detailing",
-    image: "/car-wash.jpg",
+    image: "/Images/car-wash.jpg",
     description: "Unveil the Brilliance of Your Vehicle",
     review: "Best car wash service in town. My car looks showroom fresh!",
     reviewAuthor: "Customer Review",
@@ -93,7 +93,7 @@ export const servicesData = [
     id: 5,
     title: "Oil Change Service",
     category: "Repair",
-    image: "/oil-change.jpg",
+    image: "/Images/oil-change.jpg",
     description: "Keep your engine running smoothly with regular oil changes.",
     review:
       "Fast and efficient oil change. They even topped up other fluids for free!",
@@ -114,7 +114,7 @@ export const servicesData = [
     id: 6,
     title: "Tire Replacement & Alignment",
     category: "Repair",
-    image: "/tire-service.jpg",
+    image: "/Images/tire-service.jpg",
     description:
       "Ensure optimal performance and safety with professional tire services.",
     review: "Perfect alignment! My car drives much smoother now.",
@@ -135,7 +135,7 @@ export const servicesData = [
     id: 7,
     title: "AC Service & Repair",
     category: "Repair",
-    image: "/ac-service.jpg",
+    image: "/Images/ac-service.jpg",
     description: "Stay cool with professional AC servicing and repair.",
     review: "AC is ice cold again! Great service and fair pricing.",
     reviewAuthor: "Customer Review",
@@ -155,7 +155,7 @@ export const servicesData = [
     id: 8,
     title: "Battery Services",
     category: "Repair",
-    image: "/battery-service.jpg",
+    image: "/Images/battery-service.jpg",
     description:
       "Never get stranded with our battery testing and replacement services.",
     review: "Quick battery replacement. No more starting issues!",
@@ -176,7 +176,7 @@ export const servicesData = [
     id: 9,
     title: "Dent & Paint Repair",
     category: "Body Shop",
-    image: "/dent-repair.jpg",
+    image: "/Images/dent-repair.jpg",
     description:
       "Restore your vehicle's appearance with professional dent removal and paint services.",
     review:

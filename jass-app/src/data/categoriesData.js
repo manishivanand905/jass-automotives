@@ -3,7 +3,7 @@ export const categoriesData = [
     id: 1,
     name: "Detailing",
     title: "Professional Detailing Services",
-    image: "/detailing.jpg",
+    image: "/Images/detailing.jpg",
     description:
       "Transform your vehicle's appearance with our premium detailing services. From deep cleaning to protective coatings.",
     review: "Best detailing service in town. My car looks showroom fresh!",
@@ -13,7 +13,7 @@ export const categoriesData = [
     id: 2,
     name: "Repair",
     title: "Expert Repair Services",
-    image: "/repair.jpg",
+    image: "/Images/repair.jpg",
     description:
       "Comprehensive repair solutions for all vehicle systems. From diagnostics to complete overhauls by certified technicians.",
     review:
@@ -24,7 +24,7 @@ export const categoriesData = [
     id: 3,
     name: "Body Shop",
     title: "Professional Body Shop Services",
-    image: "/body-shop.jpg",
+    image: "/Images/body-shop.jpg",
     description:
       "Restore your vehicle's appearance with expert dent removal, scratch repair, and professional paint matching.",
     review:

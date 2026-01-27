@@ -166,7 +166,7 @@ const Header = () => {
       <HeaderWrapper>
         <HeaderContainer>
           <Logo href="/">
-            <img src="/jass-logo.png" alt="Jass Automotives Logo" />
+            <img src="/Images/jass-logo.png" alt="Jass Automotives Logo" />
           </Logo>
 
           {/* Desktop Navigation */}

@@ -16,16 +16,16 @@ const Home = () => {
     <PageTransition>
       <HomeWrapper>
         <Header />
-        <Hero backgroundImage={process.env.PUBLIC_URL + "/hero-bg.jpg"} />
-        <Journey carImage={process.env.PUBLIC_URL + "/red-car.jpg"} />
+        <Hero backgroundImage={process.env.PUBLIC_URL + "/Images/hero-bg.jpg"} />
+        <Journey carImage={process.env.PUBLIC_URL + "/Images/red-car.jpg"} />
         <ProductsSection />
         <Services />
         <Testimonials />
         <CertifiedExperts
-          backgroundImage={process.env.PUBLIC_URL + "/garage-bg.jpg"}
+          backgroundImage={process.env.PUBLIC_URL + "/Images/garage-bg.jpg"}
         />
         <Contact
-          carImage={process.env.PUBLIC_URL + "/detailing-coating-car.jpg"}
+          carImage={process.env.PUBLIC_URL + "/Images/detailing-coating-car.jpg"}
         />
         <Footer />
       </HomeWrapper>

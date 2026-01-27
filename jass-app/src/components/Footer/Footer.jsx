@@ -29,7 +29,7 @@ const Footer = () => {
           {/* Logo Section - Desktop */}
           <LogoSection>
             <Logo
-              src={process.env.PUBLIC_URL + "/jass-logo.png"}
+              src={process.env.PUBLIC_URL + "/images/jass-logo.png"}
               alt="Jass Automotives Logo"
             />
           </LogoSection>
