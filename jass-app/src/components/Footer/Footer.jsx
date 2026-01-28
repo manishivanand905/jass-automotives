@@ -29,7 +29,7 @@ const Footer = () => {
           {/* Logo Section - Desktop */}
           <LogoSection>
             <Logo
-              src={process.env.PUBLIC_URL + "/images/jass-logo.png"}
+              src={process.env.PUBLIC_URL + "/Images/jass-logo.png"}
               alt="Jass Automotives Logo"
             />
           </LogoSection>
@@ -106,15 +106,24 @@ const Footer = () => {
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
                   <Address as="span">
-                    Autonation India Pvt Ltd<br />
-                    Door No.15, 31-XV-82/1, Kaithalapur,<br />
-                    KPHB 15th Phase, Kukatpally,<br />
+                    Autonation India Pvt Ltd
+                    <br />
+                    Door No.15, 31-XV-82/1, Kaithalapur,
+                    <br />
+                    KPHB 15th Phase, Kukatpally,
+                    <br />
                     Hyderabad, Telangana 500085
                   </Address>
                 </a>
                 <a
                   href="mailto:jassautomotives@gmail.com"
-                  style={{ display: "flex", gap: "10px", alignItems: "center", textDecoration: "none", color: "inherit" }}
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
                 >
                   <svg
                     width="20"
@@ -128,11 +137,19 @@ const Footer = () => {
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
-                  <ContactDetail as="span">jassautomotives@gmail.com</ContactDetail>
+                  <ContactDetail as="span">
+                    jassautomotives@gmail.com
+                  </ContactDetail>
                 </a>
                 <a
                   href="tel:+919030764455"
-                  style={{ display: "flex", gap: "10px", alignItems: "center", textDecoration: "none", color: "inherit" }}
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
                 >
                   <svg
                     width="20"
