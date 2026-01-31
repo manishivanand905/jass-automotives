@@ -509,7 +509,7 @@ const Dashboard = () => {
                   <tr key={product._id}>
                     <Td>
                       <img 
-                        src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+                        src={product.image?.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`}
                         alt={product.name}
                         style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '6px' }}
                         onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
@@ -543,7 +543,7 @@ const Dashboard = () => {
             <ModalTitle>{viewProduct.name}</ModalTitle>
             
             <ProductImage 
-              src={viewProduct.image?.startsWith('http') ? viewProduct.image : `http://localhost:5000${viewProduct.image}`}
+              src={viewProduct.image?.startsWith('http') ? viewProduct.image : `${process.env.REACT_APP_API_URL}${viewProduct.image}`}
               alt={viewProduct.name}
               onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
             />

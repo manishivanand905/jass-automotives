@@ -132,7 +132,7 @@ const ProductDetail = () => {
           
           <ProductHero>
             <ProductImage 
-              src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+              src={product.image?.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`}
               alt={product.name}
               onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
             />

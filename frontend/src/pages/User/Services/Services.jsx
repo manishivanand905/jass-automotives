@@ -118,7 +118,7 @@ const Services = () => {
                 <ServiceCard key={service._id}>
                   <ServiceImageWrapper>
                     <ServiceImage
-                      src={service.image?.startsWith('http') ? service.image : `http://localhost:5000${service.image}`}
+                      src={service.image?.startsWith('http') ? service.image : `${process.env.REACT_APP_API_URL}${service.image}`}
                       alt={service.title}
                       loading="lazy"
                       onError={(e) => { e.target.src = '/Images/repair.jpg'; }}

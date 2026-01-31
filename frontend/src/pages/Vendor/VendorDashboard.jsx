@@ -498,7 +498,7 @@ const VendorDashboard = () => {
               {services.map((service) => (
                 <ServiceItem key={service._id}>
                   <ServiceImage 
-                    src={service.image?.startsWith('http') ? service.image : `http://localhost:5000${service.image}`} 
+                    src={service.image?.startsWith('http') ? service.image : `${process.env.REACT_APP_API_URL}${service.image}`} 
                     alt={service.title}
                     onError={(e) => { e.target.src = '/Images/repair.jpg'; }}
                   />

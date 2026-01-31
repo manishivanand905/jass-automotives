@@ -130,7 +130,7 @@ const MyOrders = () => {
                         <OrderContent>
                           {order.productId?.image && (
                             <ProductImage 
-                              src={order.productId.image?.startsWith('http') ? order.productId.image : `http://localhost:5000${order.productId.image}`}
+                              src={order.productId.image?.startsWith('http') ? order.productId.image : `${process.env.REACT_APP_API_URL}${order.productId.image}`}
                               alt={order.productId?.name}
                               onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
                             />
@@ -186,7 +186,7 @@ const MyOrders = () => {
                   <InfoGrid>
                     {selectedOrder.productId?.image && (
                       <ProductImage 
-                        src={selectedOrder.productId.image?.startsWith('http') ? selectedOrder.productId.image : `http://localhost:5000${selectedOrder.productId.image}`}
+                        src={selectedOrder.productId.image?.startsWith('http') ? selectedOrder.productId.image : `${process.env.REACT_APP_API_URL}${selectedOrder.productId.image}`}
                         alt={selectedOrder.productId?.name}
                         onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
                         style={{ gridColumn: '1 / -1', marginBottom: '15px' }}

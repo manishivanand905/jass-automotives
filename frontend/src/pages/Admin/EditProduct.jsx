@@ -225,7 +225,7 @@ const EditProduct = () => {
       }
       
       if (product.image) {
-        setImagePreview(product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`);
+        setImagePreview(product.image.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`);
       }
       
       setLoading(false);

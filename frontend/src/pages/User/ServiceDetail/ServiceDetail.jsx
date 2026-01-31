@@ -120,7 +120,7 @@ const ServiceDetail = () => {
 
           <ServiceHero>
             <ServiceHeroImage 
-              src={service.image?.startsWith('http') ? service.image : `http://localhost:5000${service.image}`} 
+              src={service.image?.startsWith('http') ? service.image : `${process.env.REACT_APP_API_URL}${service.image}`} 
               alt={service.title}
               onError={(e) => { e.target.src = '/Images/repair.jpg'; }}
             />
@@ -200,7 +200,7 @@ const ServiceDetail = () => {
                 {relatedServices.map((relatedService) => (
                   <RelatedServiceCard key={relatedService._id}>
                     <RelatedServiceImage
-                      src={relatedService.image?.startsWith('http') ? relatedService.image : `http://localhost:5000${relatedService.image}`}
+                      src={relatedService.image?.startsWith('http') ? relatedService.image : `${process.env.REACT_APP_API_URL}${relatedService.image}`}
                       alt={relatedService.title}
                       onError={(e) => { e.target.src = '/Images/repair.jpg'; }}
                     />

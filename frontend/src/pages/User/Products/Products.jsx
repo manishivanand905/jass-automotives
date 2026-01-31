@@ -79,7 +79,7 @@ const Products = () => {
               {ppfProducts.map((product) => (
                 <ProductCard key={product._id} onClick={() => navigate(`/products/${product._id}`)}>
                   <ProductImage
-                    src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+                    src={product.image?.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`}
                     alt={`${product.name} - ${product.brand}`}
                     onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
                   />
@@ -104,7 +104,7 @@ const Products = () => {
               {coatingProducts.map((product) => (
                 <ProductCard key={product._id} onClick={() => navigate(`/products/${product._id}`)}>
                   <ProductImage
-                    src={product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+                    src={product.image?.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`}
                     alt={`${product.name} - ${product.brand}`}
                     onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
                   />
