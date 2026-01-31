@@ -149,12 +149,13 @@ const SubmitButton = styled.button`
 const EditService = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [keyPoints, setKeyPoints] = useState(['']);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchService = async () => {

@@ -43,7 +43,7 @@ const BookService = () => {
     setValue('name', userData.name || '');
     setValue('email', userData.email || '');
     setValue('phone', userData.phone || '');
-  }, []);
+  }, [setValue]);
 
   const fetchServices = async () => {
     try {
@@ -66,14 +66,9 @@ const BookService = () => {
 
   const onSubmit = async (data) => {
     try {
-      const selectedServiceDetails = services.filter(s => selectedServices.includes(s._id));
-      const totalAmount = selectedServiceDetails.reduce((sum, s) => {
-        const price = parseInt(s.price.replace(/[₹,]/g, ''));
-        return sum + price;
-      }, 0);
-
       for (const serviceId of selectedServices) {
         const service = services.find(s => s._id === serviceId);
+        const amount = `₹${service.price}`;
         await bookingService.createBooking({
           serviceId: serviceId,
           vendorId: service.vendorId,
@@ -87,7 +82,7 @@ const BookService = () => {
           preferredDate: data.preferredDate,
           preferredTime: data.preferredTime,
           additionalNotes: data.message,
-          amount: `₹${service.price}`
+          amount: amount
         });
       }
 

@@ -104,13 +104,14 @@ const ErrorMsg = styled.p`
 const EditVendor = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetchingVendor, setFetchingVendor] = useState(true);
 
   useEffect(() => {
     fetchVendor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchVendor = async () => {

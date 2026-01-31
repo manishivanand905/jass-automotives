@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { serviceService } from "../../../services/serviceService";
-import { PageTransition, FadeIn, StaggerContainer, StaggerItem, HoverScale } from "../../../components/AnimatedWrapper";
+import { PageTransition, FadeIn } from "../../../components/AnimatedWrapper";
 import Header from "../../../components/Header/Header";
 import Contact from "../../../components/Contact/Contact";
 import Footer from "../../../components/Footer/Footer";

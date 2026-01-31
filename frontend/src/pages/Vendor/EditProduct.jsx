@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -112,11 +112,7 @@ const EditProduct = () => {
   const { register, handleSubmit, setValue } = useForm();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchProduct();
-  }, [id]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const product = await productService.getProductById(id);
       setValue('name', product.name);
@@ -130,7 +126,11 @@ const EditProduct = () => {
       alert('Failed to load product');
       navigate('/vendor/dashboard');
     }
-  };
+  }, [id, setValue, navigate]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
 
   const onSubmit = async (data) => {
     try {
