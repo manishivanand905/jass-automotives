@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { theme } from "./styles/theme";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 import Home from "./pages/User/Home/home";
 import Services from "./pages/User/Services/Services";
@@ -33,16 +34,45 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetail />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/book-service" element={<BookService />} />
-          <Route path="/my-orders" element={<MyOrders />} />
-          <Route path="/addresses" element={<Addresses />} />
+          <Route
+            path="/contact"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <ContactPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/book-service"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <BookService />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-orders"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addresses"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <Addresses />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/vendor/login" element={<VendorLogin />} />
