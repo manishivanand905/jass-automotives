@@ -69,7 +69,28 @@ const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (product) {
-      Object.assign(product, req.body);
+      const updateData = { ...req.body };
+      
+      if (req.file) {
+        updateData.image = `/uploads/${req.file.filename}`;
+      }
+      
+      if (req.body.specifications && typeof req.body.specifications === 'string') {
+        updateData.specifications = JSON.parse(req.body.specifications);
+      }
+      
+      if (req.body.addons && typeof req.body.addons === 'string') {
+        updateData.addons = JSON.parse(req.body.addons);
+      }
+      
+      if (req.body['features[]']) {
+        updateData.features = Array.isArray(req.body['features[]']) 
+          ? req.body['features[]'] 
+          : [req.body['features[]']];
+        delete updateData['features[]'];
+      }
+      
+      Object.assign(product, updateData);
       const updatedProduct = await product.save();
       res.json(updatedProduct);
     } else {
