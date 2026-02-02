@@ -314,6 +314,10 @@ const ProductDetail = () => {
         <ProductBookingModal 
           product={product} 
           totalAmount={calculateTotal()}
+          selectedAddons={getUniqueAddons(product.addons)
+            .filter(addon => selectedAddons.includes(getAddonId(addon)))
+            .map(addon => addon.title)}
+          applicationType={applicationType}
           onClose={() => setIsModalOpen(false)} 
         />
       )}

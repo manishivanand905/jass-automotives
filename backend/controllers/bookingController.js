@@ -35,7 +35,16 @@ const createBooking = async (req, res) => {
       userId: req.user._id
     });
 
-    await sendBookingConfirmation(req.body.email, req.body);
+    const populatedBooking = await Booking.findById(booking._id)
+      .populate('productId')
+      .populate('serviceId');
+
+    await sendBookingConfirmation(req.body.email, {
+      ...req.body,
+      orderId: booking._id,
+      product: populatedBooking.productId,
+      service: populatedBooking.serviceId
+    });
 
     res.status(201).json(booking);
   } catch (error) {

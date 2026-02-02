@@ -5,6 +5,7 @@ import { PageTransition } from '../../components/AnimatedWrapper';
 import { adminService } from '../../services/adminService';
 import { authService } from '../../services/authService';
 import { productService } from '../../services/productService';
+import Footer from '../../components/Footer/Footer';
 
 const DashboardWrapper = styled.div`
   min-height: 100vh;
@@ -18,6 +19,10 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid #cc0000;
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  }
 `;
 
 const ActionsBar = styled.div`
@@ -27,6 +32,11 @@ const ActionsBar = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 15px;
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+    flex-wrap: wrap;
+  }
 `;
 
 const AddVendorBtn = styled.button`
@@ -49,6 +59,10 @@ const Title = styled.h1`
   color: white;
   font-size: 24px;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const LogoutBtn = styled.button`
@@ -71,6 +85,10 @@ const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   padding: 40px;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const Grid = styled.div`
@@ -130,6 +148,12 @@ const SectionTitle = styled.h2`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 `;
 
 const Th = styled.th`
@@ -138,6 +162,11 @@ const Th = styled.th`
   padding: 12px;
   border-bottom: 1px solid #4a4a4a;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 12px;
+  }
 `;
 
 const Td = styled.td`
@@ -145,6 +174,11 @@ const Td = styled.td`
   padding: 12px;
   border-bottom: 1px solid #4a4a4a;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 12px;
+  }
 `;
 
 const StatusBadge = styled.span`
@@ -155,6 +189,8 @@ const StatusBadge = styled.span`
   background-color: ${props => 
     props.$status === 'Completed' || props.$status === 'active' ? '#28a745' :
     props.$status === 'Pending' ? '#ffc107' :
+    props.$status === 'Confirmed' ? '#17a2b8' :
+    props.$status === 'Cancelled' ? '#dc3545' :
     props.$status === 'In Progress' ? '#17a2b8' :
     props.$status === 'inactive' ? '#6c757d' : '#6c757d'
   };
@@ -175,6 +211,13 @@ const ActionButton = styled.button`
 
   &:hover {
     background-color: ${props => props.$delete ? '#c82333' : props.$edit ? '#e0a800' : '#138496'};
+  }
+
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin-right: 3px;
+    margin-bottom: 3px;
   }
 `;
 
@@ -301,10 +344,69 @@ const AddonTitle = styled.h4`
   margin: 0 0 5px 0;
 `;
 
+const FilterBar = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const SearchInput = styled.input`
+  padding: 8px 16px;
+  background: #292929;
+  border: 2px solid #4a4a4a;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 200px;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: #cc0000;
+  }
+
+  &::placeholder {
+    color: #777;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 150px;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+`;
+
+const FilterBtn = styled.button`
+  padding: 8px 16px;
+  border: 2px solid ${props => props.$active ? '#cc0000' : '#4a4a4a'};
+  background: ${props => props.$active ? '#cc0000' : 'transparent'};
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: #cc0000;
+  }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+`;
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [vendors, setVendors] = useState([]);
   const [products, setProducts] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const [stats, setStats] = useState({
     totalOrders: 0,
     totalVendors: 0,
@@ -324,19 +426,22 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [statsData, vendorsData, productsData] = await Promise.all([
+      const [statsData, vendorsData, productsData, bookingsData] = await Promise.all([
         adminService.getDashboardStats(),
         adminService.getAllVendors(),
-        productService.getProducts()
+        productService.getProducts(),
+        adminService.getAllBookings()
       ]);
 
       console.log('Stats data:', statsData);
       console.log('Vendors data:', vendorsData);
       console.log('Products data:', productsData);
+      console.log('Bookings data:', bookingsData);
 
       setStats(statsData);
       setVendors(vendorsData);
       setProducts(productsData);
+      setBookings(bookingsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       setLoading(false);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -384,6 +489,24 @@ const Dashboard = () => {
     authService.logout();
     navigate('/admin/login');
   };
+
+  const handleUpdateBookingStatus = async (bookingId, status) => {
+    try {
+      await adminService.updateBookingStatus(bookingId, status);
+      setBookings(bookings.map(b => b._id === bookingId ? { ...b, status } : b));
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to update booking status');
+    }
+  };
+
+  const filteredBookings = bookings
+    .filter(b => b.productId)
+    .filter(b => statusFilter === 'All' || b.status === statusFilter)
+    .filter(b => {
+      if (!searchQuery) return true;
+      const orderId = b._id.slice(-8).toLowerCase();
+      return orderId.includes(searchQuery.toLowerCase());
+    });
 
   if (loading) {
     return (
@@ -533,7 +656,76 @@ const Dashboard = () => {
             <EmptyState>No products yet</EmptyState>
           )}
         </Section>
+
+        <Section>
+          <SectionTitle>Product Orders</SectionTitle>
+          <p style={{ color: '#aaa', fontSize: '14px', marginBottom: '20px' }}>All product bookings</p>
+          <FilterBar>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              {['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled'].map(status => (
+                <FilterBtn 
+                  key={status} 
+                  $active={statusFilter === status}
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {status}
+                </FilterBtn>
+              ))}
+            </div>
+            <SearchInput 
+              type="text"
+              placeholder="Search by Order ID..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </FilterBar>
+          {filteredBookings.length > 0 ? (
+            <Table>
+              <thead>
+                <tr>
+                  <Th>Order ID</Th>
+                  <Th>Product</Th>
+                  <Th>Customer</Th>
+                  <Th>Phone</Th>
+                  <Th>Vehicle</Th>
+                  <Th>Date</Th>
+                  <Th>Amount</Th>
+                  <Th>Status</Th>
+                  <Th>Actions</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredBookings.map((booking) => (
+                  <tr key={booking._id}>
+                    <Td>#{booking._id.slice(-8)}</Td>
+                    <Td>{booking.productId?.name || 'N/A'}</Td>
+                    <Td>{booking.customerName}</Td>
+                    <Td>{booking.phone}</Td>
+                    <Td>{booking.carMake} {booking.carModel}</Td>
+                    <Td>{booking.preferredDate}</Td>
+                    <Td>{booking.amount}</Td>
+                    <Td><StatusBadge $status={booking.status}>{booking.status}</StatusBadge></Td>
+                    <Td>
+                      {booking.status === 'Pending' && (
+                        <>
+                          <ActionButton onClick={() => handleUpdateBookingStatus(booking._id, 'Confirmed')}>Confirm</ActionButton>
+                          <ActionButton $delete onClick={() => handleUpdateBookingStatus(booking._id, 'Cancelled')}>Cancel</ActionButton>
+                        </>
+                      )}
+                      {booking.status === 'Confirmed' && (
+                        <ActionButton onClick={() => handleUpdateBookingStatus(booking._id, 'Completed')}>Complete</ActionButton>
+                      )}
+                    </Td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <EmptyState>No {statusFilter !== 'All' ? statusFilter.toLowerCase() : ''} product orders</EmptyState>
+          )}
+        </Section>
       </Container>
+      <Footer />
       </DashboardWrapper>
 
       {viewProduct && (

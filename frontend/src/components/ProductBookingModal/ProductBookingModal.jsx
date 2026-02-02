@@ -31,7 +31,7 @@ const TIME_SLOTS = [
   "18:00",
 ];
 
-const ProductBookingModal = ({ product, totalAmount, onClose }) => {
+const ProductBookingModal = ({ product, totalAmount, onClose, selectedAddons = [], applicationType = 'store' }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -135,6 +135,8 @@ const ProductBookingModal = ({ product, totalAmount, onClose }) => {
         preferredTime: formData.time,
         additionalNotes: formData.message,
         amount: totalAmount,
+        applicationType: applicationType === 'store' ? 'At Store' : 'Outside by Customer',
+        selectedAddons: selectedAddons
       };
 
       const newBooking = await bookingService.createBooking(bookingData);

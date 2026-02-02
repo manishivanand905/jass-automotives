@@ -98,35 +98,90 @@ const sendPasswordResetEmail = async (email, resetToken) => {
 };
 
 const sendBookingConfirmation = async (email, bookingDetails) => {
-  const { customerName, serviceId, productId, preferredDate, preferredTime, amount } = bookingDetails;
-  const bookingType = serviceId ? 'Service' : 'Product';
+  const { customerName, orderId, product, service, preferredDate, preferredTime, amount, applicationType, selectedAddons, carMake, carModel } = bookingDetails;
+  const shortOrderId = orderId.toString().slice(-8);
   
-  const content = `
-    <div class="content">
-      <h2>Booking Confirmed!</h2>
-      <p>Dear ${customerName},</p>
-      <p>Your ${bookingType} booking has been successfully confirmed at Jass Automotives.</p>
-      <div class="details">
-        <h3 style="color: #C90000; margin-top: 0;">Booking Details:</h3>
-        <ul>
-          <li><strong>Type:</strong> ${bookingType}</li>
-          <li><strong>Date:</strong> ${preferredDate}</li>
-          <li><strong>Time:</strong> ${preferredTime}</li>
-          <li><strong>Amount:</strong> ${amount}</li>
-        </ul>
+  if (product) {
+    const addonsHtml = selectedAddons && selectedAddons.length > 0 
+      ? `<li><strong>Add-Ons:</strong> ${selectedAddons.join(', ')}</li>`
+      : '';
+    
+    const content = `
+      <div class="content">
+        <h2>Booking Confirmed!</h2>
+        <p>Dear ${customerName},</p>
+        <p>Your product booking has been successfully confirmed at Jass Automotives.</p>
+        <div class="details">
+          <h3 style="color: #C90000; margin-top: 0;">Order Information:</h3>
+          <ul>
+            <li><strong>Order ID:</strong> #${shortOrderId}</li>
+          </ul>
+        </div>
+        <div class="details">
+          <h3 style="color: #C90000; margin-top: 0;">Product Details:</h3>
+          <ul>
+            <li><strong>Product:</strong> ${product.name}</li>
+            <li><strong>Brand:</strong> ${product.brand}</li>
+            <li><strong>Category:</strong> ${product.category}</li>
+          </ul>
+        </div>
+        <div class="details">
+          <h3 style="color: #C90000; margin-top: 0;">Booking Details:</h3>
+          <ul>
+            <li><strong>Vehicle:</strong> ${carMake} ${carModel}</li>
+            <li><strong>Date:</strong> ${preferredDate}</li>
+            <li><strong>Time:</strong> ${preferredTime}</li>
+            <li><strong>Application Location:</strong> ${applicationType || 'At Store'}</li>
+            ${addonsHtml}
+            <li><strong>Total Amount:</strong> ${amount}</li>
+          </ul>
+        </div>
+        <p>Our team will contact you shortly to confirm the final details and answer any questions you may have.</p>
+        <p style="color: #585858;">Please arrive 10 minutes before your scheduled time.</p>
+        <p><strong>Thank you for choosing Jass Automotives!</strong></p>
       </div>
-      <p>Our team will contact you shortly to confirm the final details and answer any questions you may have.</p>
-      <p style="color: #585858;">Please arrive 10 minutes before your scheduled time.</p>
-      <p><strong>Thank you for choosing Jass Automotives!</strong></p>
-    </div>
-  `;
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Booking Confirmation - Jass Automotives',
-    html: emailTemplate(content)
-  };
-  await transporter.sendMail(mailOptions);
+    `;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Product Booking Confirmation - Jass Automotives',
+      html: emailTemplate(content)
+    };
+    await transporter.sendMail(mailOptions);
+  } else if (service) {
+    const content = `
+      <div class="content">
+        <h2>Booking Confirmed!</h2>
+        <p>Dear ${customerName},</p>
+        <p>Your service booking has been successfully confirmed at Jass Automotives.</p>
+        <div class="details">
+          <h3 style="color: #C90000; margin-top: 0;">Order Information:</h3>
+          <ul>
+            <li><strong>Order ID:</strong> #${shortOrderId}</li>
+          </ul>
+        </div>
+        <div class="details">
+          <h3 style="color: #C90000; margin-top: 0;">Booking Details:</h3>
+          <ul>
+            <li><strong>Service:</strong> ${service.title || service.name || 'Service'}</li>
+            <li><strong>Date:</strong> ${preferredDate}</li>
+            <li><strong>Time:</strong> ${preferredTime}</li>
+            <li><strong>Amount:</strong> ${amount}</li>
+          </ul>
+        </div>
+        <p>Our team will contact you shortly to confirm the final details and answer any questions you may have.</p>
+        <p style="color: #585858;">Please arrive 10 minutes before your scheduled time.</p>
+        <p><strong>Thank you for choosing Jass Automotives!</strong></p>
+      </div>
+    `;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Service Booking Confirmation - Jass Automotives',
+      html: emailTemplate(content)
+    };
+    await transporter.sendMail(mailOptions);
+  }
 };
 
 module.exports = { sendRegistrationEmail, sendPasswordResetEmail, sendBookingConfirmation };

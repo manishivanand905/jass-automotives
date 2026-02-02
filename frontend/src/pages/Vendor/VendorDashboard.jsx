@@ -20,7 +20,7 @@ const Header = styled.div`
   border-bottom: 2px solid #cc0000;
 
   @media (max-width: 768px) {
-    padding: 20px;
+    padding: 15px 20px;
   }
 `;
 
@@ -30,7 +30,7 @@ const Title = styled.h1`
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
@@ -72,6 +72,10 @@ const ActionsBar = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 15px;
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  }
 `;
 
 const AddBtn = styled.button`
@@ -94,6 +98,10 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const Grid = styled.div`
@@ -104,6 +112,7 @@ const Grid = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 `;
 
@@ -112,6 +121,10 @@ const Card = styled.div`
   padding: 30px;
   border-radius: 12px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const CardTitle = styled.h3`
@@ -133,6 +146,10 @@ const Section = styled.div`
   padding: 30px;
   border-radius: 12px;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -141,6 +158,10 @@ const SectionTitle = styled.h2`
   margin: 0 0 20px 0;
   padding-bottom: 15px;
   border-bottom: 2px solid #cc0000;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const ServicesList = styled.div`
@@ -179,7 +200,7 @@ const ServiceImage = styled.img`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 200px;
+    height: 180px;
   }
 `;
 
@@ -265,6 +286,10 @@ const BookingItem = styled.div`
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(204, 0, 0, 0.2);
   }
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
 `;
 
 const BookingHeader = styled.div`
@@ -330,6 +355,33 @@ const FilterBar = styled.div`
   gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const SearchInput = styled.input`
+  padding: 8px 16px;
+  background: #292929;
+  border: 2px solid #4a4a4a;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 200px;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: #cc0000;
+  }
+
+  &::placeholder {
+    color: #777;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 150px;
+    font-size: 13px;
+  }
 `;
 
 const FilterBtn = styled.button`
@@ -346,6 +398,11 @@ const FilterBtn = styled.button`
   &:hover {
     border-color: #cc0000;
   }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 `;
 
 const BookingActions = styled.div`
@@ -354,9 +411,32 @@ const BookingActions = styled.div`
   margin-top: 15px;
   padding-top: 15px;
   border-top: 1px solid #4a4a4a;
+  flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    gap: 8px;
+  }
+`;
+
+const ViewBtn = styled.button`
+  padding: 8px 16px;
+  background-color: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #b30000;
+  }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 12px;
+    flex: 1;
   }
 `;
 
@@ -367,6 +447,7 @@ const VendorDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [vendorName, setVendorName] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -413,7 +494,7 @@ const VendorDashboard = () => {
       });
 
       setServices(servicesData);
-      setBookings(bookingsData);
+      setBookings(bookingsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       setLoading(false);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -447,9 +528,13 @@ const VendorDashboard = () => {
     }
   };
 
-  const filteredBookings = statusFilter === 'All' 
-    ? bookings 
-    : bookings.filter(b => b.status === statusFilter);
+  const filteredBookings = bookings
+    .filter(b => statusFilter === 'All' || b.status === statusFilter)
+    .filter(b => {
+      if (!searchQuery) return true;
+      const orderId = b._id.slice(-8).toLowerCase();
+      return orderId.includes(searchQuery.toLowerCase());
+    });
 
   if (loading) {
     return (
@@ -523,25 +608,34 @@ const VendorDashboard = () => {
           <SectionTitle>Recent Bookings</SectionTitle>
           <p style={{ color: '#aaa', fontSize: '14px', marginBottom: '20px' }}>Latest service bookings from customers</p>
           <FilterBar>
-            {['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled'].map(status => (
-              <FilterBtn 
-                key={status} 
-                $active={statusFilter === status}
-                onClick={() => setStatusFilter(status)}
-              >
-                {status}
-              </FilterBtn>
-            ))}
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              {['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled'].map(status => (
+                <FilterBtn 
+                  key={status} 
+                  $active={statusFilter === status}
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {status}
+                </FilterBtn>
+              ))}
+            </div>
+            <SearchInput 
+              type="text"
+              placeholder="Search by Order ID..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </FilterBar>
           {filteredBookings.length > 0 ? (
             <ServicesList>
               {filteredBookings.map((booking) => (
                 <BookingItem key={booking._id}>
                   <BookingHeader>
-                    <ServiceName>{booking.serviceId?.title || 'Service'}</ServiceName>
+                    <ServiceName>{booking.serviceId?.title || booking.productId?.name || 'Booking'}</ServiceName>
                     <BookingStatus $status={booking.status}>{booking.status}</BookingStatus>
                   </BookingHeader>
                   <BookingDetails>
+                    <BookingDetail><strong>Order ID:</strong>#{booking._id.slice(-8)}</BookingDetail>
                     <BookingDetail><strong>Customer:</strong>{booking.customerName}</BookingDetail>
                     <BookingDetail><strong>Phone:</strong>{booking.phone}</BookingDetail>
                     <BookingDetail><strong>Car:</strong>{booking.carMake} {booking.carModel}</BookingDetail>
@@ -554,23 +648,24 @@ const VendorDashboard = () => {
                       Note: {booking.additionalNotes}
                     </div>
                   )}
-                  {booking.status === 'Pending' && (
-                    <BookingActions>
-                      <ActionBtn className="edit" onClick={() => handleUpdateBookingStatus(booking._id, 'Confirmed')}>
-                        Accept
-                      </ActionBtn>
-                      <ActionBtn className="delete" onClick={() => handleUpdateBookingStatus(booking._id, 'Cancelled')}>
-                        Reject
-                      </ActionBtn>
-                    </BookingActions>
-                  )}
-                  {booking.status === 'Confirmed' && (
-                    <BookingActions>
+                  <BookingActions>
+                    <ViewBtn onClick={() => alert(`Order Details:\n\nOrder ID: #${booking._id.slice(-8)}\nCustomer: ${booking.customerName}\nEmail: ${booking.email}\nPhone: ${booking.phone}\nVehicle: ${booking.carMake} ${booking.carModel}\nDate: ${booking.preferredDate}\nTime: ${booking.preferredTime}\nAmount: ${booking.amount}\nStatus: ${booking.status}${booking.additionalNotes ? '\nNotes: ' + booking.additionalNotes : ''}`)}>View Details</ViewBtn>
+                    {booking.status === 'Pending' && (
+                      <>
+                        <ActionBtn className="edit" onClick={() => handleUpdateBookingStatus(booking._id, 'Confirmed')}>
+                          Accept
+                        </ActionBtn>
+                        <ActionBtn className="delete" onClick={() => handleUpdateBookingStatus(booking._id, 'Cancelled')}>
+                          Reject
+                        </ActionBtn>
+                      </>
+                    )}
+                    {booking.status === 'Confirmed' && (
                       <ActionBtn className="edit" onClick={() => handleUpdateBookingStatus(booking._id, 'Completed')}>
                         Mark as Completed
                       </ActionBtn>
-                    </BookingActions>
-                  )}
+                    )}
+                  </BookingActions>
                 </BookingItem>
               ))}
             </ServicesList>
