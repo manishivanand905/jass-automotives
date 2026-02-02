@@ -433,17 +433,21 @@ const Login = () => {
         password: data.password,
         phone: data.phone || ''
       });
-      alert('Registration successful! Please login.');
+      alert('Registration successful! Check your email for confirmation.');
       setIsToggled(false);
     } catch (error) {
       alert(error.response?.data?.message || 'Registration failed');
     }
   };
 
-  const onForgotPassword = (data) => {
-    console.log('Forgot password:', data);
-    alert('Password reset link sent to your email!');
-    setShowForgotPassword(false);
+  const onForgotPassword = async (data) => {
+    try {
+      await authService.forgotPassword(data.email);
+      alert('Password reset link sent to your email!');
+      setShowForgotPassword(false);
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to send reset email');
+    }
   };
 
   if (showForgotPassword) {

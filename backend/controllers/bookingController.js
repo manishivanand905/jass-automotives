@@ -1,4 +1,5 @@
 const Booking = require('../models/Booking');
+const { sendBookingConfirmation } = require('../utils/emailService');
 
 // @desc    Get all bookings
 // @route   GET /api/bookings
@@ -33,6 +34,9 @@ const createBooking = async (req, res) => {
       ...req.body,
       userId: req.user._id
     });
+
+    await sendBookingConfirmation(req.body.email, req.body);
+
     res.status(201).json(booking);
   } catch (error) {
     res.status(500).json({ message: error.message });

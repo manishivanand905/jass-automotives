@@ -96,11 +96,26 @@ const ProductDetail = () => {
   }
 
   const toggleAddon = (addonId) => {
-    setSelectedAddons(prev =>
-      prev.includes(addonId)
+    setSelectedAddons(prev => {
+      const newSelection = prev.includes(addonId)
         ? prev.filter(id => id !== addonId)
-        : [...prev, addonId]
-    );
+        : [...prev, addonId];
+      console.log('Selected addons:', newSelection);
+      return newSelection;
+    });
+  };
+
+  const getAddonId = (addon) => addon._id || addon.id || `${product.id}-${addon.title}`;
+
+  const getUniqueAddons = (addons) => {
+    if (!Array.isArray(addons)) return [];
+    const seen = new Set();
+    return addons.filter(addon => {
+      const addonId = getAddonId(addon);
+      if (seen.has(addonId)) return false;
+      seen.add(addonId);
+      return true;
+    });
   };
 
   const calculateTotal = () => {
@@ -116,9 +131,10 @@ const ProductDetail = () => {
       });
     }
     
-    const addonsTotal = Array.isArray(product.addons) ? product.addons
-      .filter(addon => selectedAddons.includes(addon.id))
-      .reduce((sum, addon) => sum + parseInt(addon.price.replace(/[₹,]/g, '')), 0) : 0;
+    const uniqueAddons = getUniqueAddons(product.addons);
+    const addonsTotal = uniqueAddons
+      .filter(addon => selectedAddons.includes(getAddonId(addon)))
+      .reduce((sum, addon) => sum + parseInt(addon.price.replace(/[₹,]/g, '')), 0);
     const applicationFee = applicationType === 'store' ? 20000 : 0;
     return `₹${(basePrice + specsTotal + addonsTotal + applicationFee).toLocaleString('en-IN')}`;
   };
@@ -196,27 +212,35 @@ const ProductDetail = () => {
 
           <AddonsSection>
             <SectionTitle>Add-Ons</SectionTitle>
-            {Array.isArray(product.addons) && product.addons.map((addon) => (
-              <AddonCard key={addon.id} $selected={selectedAddons.includes(addon.id)}>
-                <AddonCheckbox
-                  type="checkbox"
-                  checked={selectedAddons.includes(addon.id)}
-                  onChange={() => toggleAddon(addon.id)}
-                />
-                <div style={{ flex: 1 }}>
-                  <AddonHeader>
-                    <AddonTitle>{addon.title}</AddonTitle>
-                    <AddonPrice>{addon.price}</AddonPrice>
-                  </AddonHeader>
-                  <AddonDescription>{addon.description}</AddonDescription>
-                  <AddonIncluded>
-                    {addon.included.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </AddonIncluded>
-                </div>
-              </AddonCard>
-            ))}
+            {getUniqueAddons(product.addons).map((addon, index) => {
+              const addonId = getAddonId(addon);
+              const isSelected = selectedAddons.includes(addonId);
+              return (
+                <AddonCard key={addonId} $selected={isSelected}>
+                  <AddonCheckbox
+                    type="checkbox"
+                    id={`addon-${addonId}`}
+                    checked={isSelected}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      toggleAddon(addonId);
+                    }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <AddonHeader>
+                      <AddonTitle>{addon.title}</AddonTitle>
+                      <AddonPrice>{addon.price}</AddonPrice>
+                    </AddonHeader>
+                    <AddonDescription>{addon.description}</AddonDescription>
+                    <AddonIncluded>
+                      {addon.included.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </AddonIncluded>
+                  </div>
+                </AddonCard>
+              );
+            })}
           </AddonsSection>
 
           <ApplicationSection>

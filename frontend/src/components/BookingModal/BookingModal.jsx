@@ -109,6 +109,16 @@ const BookingModal = ({ service, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const isAuth = localStorage.getItem('isAuthenticated') === 'true';
+    const role = localStorage.getItem('userRole');
+    
+    if (!isAuth || role !== 'user') {
+      alert('Please login to book a service');
+      window.location.href = '/login';
+      return;
+    }
+    
     setLoading(true);
     setError("");
 

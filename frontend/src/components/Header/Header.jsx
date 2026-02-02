@@ -70,7 +70,7 @@ const Header = () => {
     { id: "services", label: "Services", path: "/services" },
     { id: "products", label: "Products", path: "/products" },
     { id: "contact", label: "Contact", path: "/contact" },
-    { id: "book-service", label: "Book a Service", path: "/book-service" },
+    { id: "book-service", label: "Book a Service", path: "/book-service", requiresAuth: true },
   ];
 
   const toggleMobileMenu = () => {
@@ -81,7 +81,12 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleLinkClick = (linkId) => {
+  const handleLinkClick = (linkId, requiresAuth) => {
+    if (requiresAuth && (!isAuthenticated || userRole !== 'user')) {
+      alert('Please login to book a service');
+      navigate('/login');
+      return;
+    }
     setActiveLink(linkId);
     closeMobileMenu();
   };
@@ -176,7 +181,14 @@ const Header = () => {
                   <a
                     href={link.path}
                     className={activeLink === link.id ? "active" : ""}
-                    onClick={() => handleLinkClick(link.id)}
+                    onClick={(e) => {
+                      if (link.requiresAuth) {
+                        e.preventDefault();
+                        handleLinkClick(link.id, link.requiresAuth);
+                      } else {
+                        handleLinkClick(link.id);
+                      }
+                    }}
                   >
                     {link.label}
                   </a>
@@ -236,7 +248,14 @@ const Header = () => {
               <a
                 href={link.path}
                 className={activeLink === link.id ? "active" : ""}
-                onClick={() => handleLinkClick(link.id)}
+                onClick={(e) => {
+                  if (link.requiresAuth) {
+                    e.preventDefault();
+                    handleLinkClick(link.id, link.requiresAuth);
+                  } else {
+                    handleLinkClick(link.id);
+                  }
+                }}
               >
                 {link.label}
               </a>

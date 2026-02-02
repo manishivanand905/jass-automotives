@@ -226,7 +226,6 @@ export const AddonCard = styled.div`
   display: flex;
   gap: 20px;
   transition: all 0.3s ease;
-  cursor: pointer;
 
   &:hover {
     border-color: #cc0000;

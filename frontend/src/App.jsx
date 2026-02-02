@@ -15,6 +15,7 @@ import BookService from "./pages/User/BookService/BookService";
 import MyOrders from "./pages/User/MyOrders/MyOrders";
 import Addresses from "./pages/User/Addresses/Addresses";
 import Login from "./pages/Login/Login";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import AdminLogin from "./pages/Admin/Login";
 import VendorLogin from "./pages/Vendor/Login";
 import AdminDashboard from "./pages/Admin/Dashboard";
@@ -74,6 +75,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/vendor/login" element={<VendorLogin />} />
           <Route
