@@ -176,23 +176,11 @@ const EditProduct = () => {
   const [addons, setAddons] = useState([{ id: '', title: '', description: '', price: '', included: [''] }]);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [applicationType, setApplicationType] = useState('At Store');
-  const [vendors, setVendors] = useState([]);
 
   useEffect(() => {
-    fetchVendors();
     fetchProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
-  const fetchVendors = async () => {
-    try {
-      const vendorsData = await adminService.getAllVendors();
-      setVendors(vendorsData);
-    } catch (error) {
-      console.error('Failed to fetch vendors:', error);
-    }
-  };
 
   const fetchProduct = async () => {
     try {
@@ -207,14 +195,6 @@ const EditProduct = () => {
       setValue('warranty', product.specifications?.warranty || '');
       setValue('layers', product.specifications?.layers || '');
       setValue('thickness', product.specifications?.thickness || '');
-      
-      if (product.applicationType) {
-        setApplicationType(product.applicationType);
-      }
-      
-      if (product.vendorLocation) {
-        setValue('vendorLocation', product.vendorLocation);
-      }
       
       if (product.features && product.features.length > 0) {
         setFeatures(product.features);
@@ -306,11 +286,6 @@ const EditProduct = () => {
       formData.append('description', data.description);
       formData.append('detailedDescription', data.detailedDescription);
       formData.append('price', data.price);
-      formData.append('applicationType', applicationType);
-      
-      if (applicationType === 'At Store' && data.vendorLocation) {
-        formData.append('vendorLocation', data.vendorLocation);
-      }
       
       features.filter(f => f.trim() !== '').forEach(f => {
         formData.append('features[]', f);
@@ -435,28 +410,6 @@ const EditProduct = () => {
             <Label>Thickness</Label>
             <Input {...register('thickness')} placeholder="e.g., 2 microns" />
           </FormGroup>
-
-          <FormGroup>
-            <Label>Application Type *</Label>
-            <Select value={applicationType} onChange={(e) => setApplicationType(e.target.value)}>
-              <option value="At Store">Application at Store</option>
-              <option value="Outside by Customer">Application Outside by Customer</option>
-            </Select>
-          </FormGroup>
-
-          {applicationType === 'At Store' && (
-            <FormGroup>
-              <Label>Vendor Location *</Label>
-              <Select {...register('vendorLocation', { required: applicationType === 'At Store' })}>
-                <option value="">Select Vendor Location</option>
-                {vendors.map((vendor) => (
-                  <option key={vendor._id} value={vendor.location}>
-                    {vendor.name} - {vendor.location}
-                  </option>
-                ))}
-              </Select>
-            </FormGroup>
-          )}
 
           <FormGroup>
             <Label>Add-ons</Label>

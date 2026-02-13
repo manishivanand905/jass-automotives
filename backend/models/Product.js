@@ -38,10 +38,14 @@ const productSchema = new mongoose.Schema({
     hardness: String,
     warranty: String,
     layers: String,
-    thickness: String
+    thickness: String,
+    finish: String,
+    coverage: String
+  },
+  specOptions: {
+    type: mongoose.Schema.Types.Mixed
   },
   addons: [{
-    id: String,
     title: String,
     description: String,
     price: String,
