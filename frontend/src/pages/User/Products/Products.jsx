@@ -38,13 +38,15 @@ const Products = () => {
       setProducts(data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
       setLoading(false);
     }
   };
 
-  const ppfProducts = products.filter(p => p.category === 'PPF');
-  const coatingProducts = products.filter(p => p.category === 'Ceramic Coating');
+  const ppfProducts = products.filter((p) => p.category === "PPF");
+  const coatingProducts = products.filter(
+    (p) => p.category === "Ceramic Coating",
+  );
 
   if (loading) {
     return (
@@ -52,7 +54,11 @@ const Products = () => {
         <Header />
         <ProductsWrapper>
           <ProductsContainer>
-            <p style={{ textAlign: 'center', padding: '50px 0', color: '#fff' }}>Loading...</p>
+            <p
+              style={{ textAlign: "center", padding: "50px 0", color: "#fff" }}
+            >
+              Loading...
+            </p>
           </ProductsContainer>
         </ProductsWrapper>
         <Footer />
@@ -77,22 +83,32 @@ const Products = () => {
             </FadeIn>
             <ProductsGrid>
               {ppfProducts.map((product) => (
-                <ProductCard key={product._id} onClick={() => navigate(`/products/${product._id}`)}>
+                <ProductCard
+                  key={product._id}
+                  onClick={() => navigate(`/products/${product._id}`)}
+                >
                   <ProductImage
-                    src={product.image?.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`}
+                    src={
+                      product.image?.startsWith("http")
+                        ? product.image
+                        : `${process.env.REACT_APP_API_URL}${product.image}`
+                    }
                     alt={`${product.name} - ${product.brand}`}
-                    onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
+                    onError={(e) => {
+                      e.target.src = "/Images/products-showcase.jpg";
+                    }}
                   />
                   <ProductContent>
                     <ProductBrand>{product.brand}</ProductBrand>
                     <ProductName>{product.name}</ProductName>
-                    <ProductDescription>{product.description}</ProductDescription>
-                    <ProductPrice>{product.price}</ProductPrice>
+                    <ProductDescription>
+                      {product.description}
+                    </ProductDescription>
+                    <ProductPrice>₹{parseInt(product.price).toLocaleString('en-IN')}</ProductPrice>
                     <ViewDetailsButton>View Details</ViewDetailsButton>
                   </ProductContent>
                 </ProductCard>
-              ))
-              }
+              ))}
             </ProductsGrid>
           </CategorySection>
 
@@ -102,17 +118,28 @@ const Products = () => {
             </FadeIn>
             <ProductsGrid>
               {coatingProducts.map((product) => (
-                <ProductCard key={product._id} onClick={() => navigate(`/products/${product._id}`)}>
+                <ProductCard
+                  key={product._id}
+                  onClick={() => navigate(`/products/${product._id}`)}
+                >
                   <ProductImage
-                    src={product.image?.startsWith('http') ? product.image : `${process.env.REACT_APP_API_URL}${product.image}`}
+                    src={
+                      product.image?.startsWith("http")
+                        ? product.image
+                        : `${process.env.REACT_APP_API_URL}${product.image}`
+                    }
                     alt={`${product.name} - ${product.brand}`}
-                    onError={(e) => { e.target.src = '/Images/products-showcase.jpg'; }}
+                    onError={(e) => {
+                      e.target.src = "/Images/products-showcase.jpg";
+                    }}
                   />
                   <ProductContent>
                     <ProductBrand>{product.brand}</ProductBrand>
                     <ProductName>{product.name}</ProductName>
-                    <ProductDescription>{product.description}</ProductDescription>
-                    <ProductPrice>{product.price}</ProductPrice>
+                    <ProductDescription>
+                      {product.description}
+                    </ProductDescription>
+                    <ProductPrice>₹{parseInt(product.price).toLocaleString('en-IN')}</ProductPrice>
                     <ViewDetailsButton>View Details</ViewDetailsButton>
                   </ProductContent>
                 </ProductCard>

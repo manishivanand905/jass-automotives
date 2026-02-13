@@ -20,8 +20,6 @@ const slideUp = keyframes`
   }
 `;
 
-
-
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -168,7 +166,7 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: 14px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.heading};
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
@@ -258,5 +256,3 @@ export const SubmitButton = styled.button`
     font-size: 16px;
   }
 `;
-
-

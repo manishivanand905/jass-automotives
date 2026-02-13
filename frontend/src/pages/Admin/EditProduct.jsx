@@ -168,14 +168,47 @@ const SubmitButton = styled.button`
   }
 `;
 
+const SpecOptionRow = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+`;
+
+const SmallInput = styled(Input)`
+  flex: 1;
+  min-width: 120px;
+  
+  @media (max-width: 768px) {
+    min-width: 100px;
+  }
+  
+  &[type="number"]::-webkit-inner-spin-button,
+  &[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+`;
+
 const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, watch } = useForm();
   const [features, setFeatures] = useState(['']);
   const [addons, setAddons] = useState([{ id: '', title: '', description: '', price: '', included: [''] }]);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [specOptions, setSpecOptions] = useState({});
+  const [defaultSpecIndex, setDefaultSpecIndex] = useState({});
+  const category = watch('category');
 
   useEffect(() => {
     fetchProduct();
@@ -191,10 +224,6 @@ const EditProduct = () => {
       setValue('description', product.description);
       setValue('detailedDescription', product.detailedDescription);
       setValue('price', product.price);
-      setValue('hardness', product.specifications?.hardness || '');
-      setValue('warranty', product.specifications?.warranty || '');
-      setValue('layers', product.specifications?.layers || '');
-      setValue('thickness', product.specifications?.thickness || '');
       
       if (product.features && product.features.length > 0) {
         setFeatures(product.features);
@@ -202,6 +231,20 @@ const EditProduct = () => {
       
       if (product.addons && product.addons.length > 0) {
         setAddons(product.addons);
+      }
+      
+      if (typeof product.specOptions === 'string') {
+        product.specOptions = JSON.parse(product.specOptions);
+      }
+      
+      if (product.specOptions && Object.keys(product.specOptions).length > 0) {
+        setSpecOptions(product.specOptions);
+        const defaults = {};
+        Object.keys(product.specOptions).forEach(key => {
+          const idx = product.specOptions[key].findIndex(opt => opt.value === product.specifications[key]);
+          defaults[key] = idx >= 0 ? idx : 1;
+        });
+        setDefaultSpecIndex(defaults);
       }
       
       if (product.image) {
@@ -213,6 +256,17 @@ const EditProduct = () => {
       alert('Failed to load product');
       navigate('/admin/dashboard');
     }
+  };
+
+  const updateSpecOption = (specKey, index, field, value) => {
+    setSpecOptions(prev => ({
+      ...prev,
+      [specKey]: prev[specKey].map((opt, i) => i === index ? { ...opt, [field]: value } : opt)
+    }));
+  };
+
+  const setDefaultSpec = (specKey, index) => {
+    setDefaultSpecIndex(prev => ({ ...prev, [specKey]: index }));
   };
 
   const addFeature = () => {
@@ -291,12 +345,23 @@ const EditProduct = () => {
         formData.append('features[]', f);
       });
       
-      formData.append('specifications', JSON.stringify({
-        hardness: data.hardness || '9H',
-        warranty: data.warranty || '5 years',
-        layers: data.layers || '2 layers',
-        thickness: data.thickness || '2 microns',
-      }));
+      formData.append('specifications', JSON.stringify(
+        category === 'PPF' ? {
+          thickness: specOptions.thickness?.[defaultSpecIndex.thickness]?.value || '',
+          warranty: specOptions.warranty?.[defaultSpecIndex.warranty]?.value || '',
+          finish: specOptions.finish?.[defaultSpecIndex.finish]?.value || '',
+          coverage: specOptions.coverage?.[defaultSpecIndex.coverage]?.value || ''
+        } : {
+          hardness: specOptions.hardness?.[defaultSpecIndex.hardness]?.value || '',
+          warranty: specOptions.warranty?.[defaultSpecIndex.warranty]?.value || '',
+          layers: specOptions.layers?.[defaultSpecIndex.layers]?.value || '',
+          thickness: specOptions.thickness?.[defaultSpecIndex.thickness]?.value || ''
+        }
+      ));
+
+      if (Object.keys(specOptions).length > 0) {
+        formData.append('specOptions', JSON.stringify(specOptions));
+      }
 
       const validAddons = addons.filter(a => a.title.trim() !== '');
       if (validAddons.length > 0) {
@@ -388,28 +453,131 @@ const EditProduct = () => {
 
           <FormGroup>
             <Label>Price *</Label>
-            <Input {...register('price', { required: true })} placeholder="e.g., ₹25,000" />
+            <div style={{ position: 'relative' }}>
+              <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+              <Input {...register('price', { required: true })} placeholder="25000" style={{ paddingLeft: '28px' }} type="number" />
+            </div>
           </FormGroup>
 
-          <FormGroup>
-            <Label>Hardness</Label>
-            <Input {...register('hardness')} placeholder="e.g., 9H" />
-          </FormGroup>
+          {category === 'PPF' && Object.keys(specOptions).length > 0 && (
+            <>
+              <FormGroup>
+                <Label>Thickness Options (3 variants, select default)</Label>
+                {specOptions.thickness?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('thickness', idx, 'value', e.target.value)} placeholder="e.g., 6.5 mil" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('thickness', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.thickness === idx} onChange={() => setDefaultSpec('thickness', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
 
-          <FormGroup>
-            <Label>Warranty</Label>
-            <Input {...register('warranty')} placeholder="e.g., 5 years" />
-          </FormGroup>
+              <FormGroup>
+                <Label>Warranty Options (3 variants, select default)</Label>
+                {specOptions.warranty?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('warranty', idx, 'value', e.target.value)} placeholder="e.g., 7 years" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('warranty', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.warranty === idx} onChange={() => setDefaultSpec('warranty', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
 
-          <FormGroup>
-            <Label>Layers</Label>
-            <Input {...register('layers')} placeholder="e.g., 2 layers" />
-          </FormGroup>
+              <FormGroup>
+                <Label>Finish Options (3 variants, select default)</Label>
+                {specOptions.finish?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('finish', idx, 'value', e.target.value)} placeholder="e.g., Gloss" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('finish', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.finish === idx} onChange={() => setDefaultSpec('finish', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
 
-          <FormGroup>
-            <Label>Thickness</Label>
-            <Input {...register('thickness')} placeholder="e.g., 2 microns" />
-          </FormGroup>
+              <FormGroup>
+                <Label>Coverage Options (3 variants, select default)</Label>
+                {specOptions.coverage?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('coverage', idx, 'value', e.target.value)} placeholder="e.g., Full front coverage" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('coverage', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.coverage === idx} onChange={() => setDefaultSpec('coverage', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
+            </>
+          )}
+
+          {category === 'Ceramic Coating' && Object.keys(specOptions).length > 0 && (
+            <>
+              <FormGroup>
+                <Label>Hardness Options (3 variants, select default)</Label>
+                {specOptions.hardness?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('hardness', idx, 'value', e.target.value)} placeholder="e.g., 9H" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('hardness', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.hardness === idx} onChange={() => setDefaultSpec('hardness', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
+
+              <FormGroup>
+                <Label>Warranty Options (3 variants, select default)</Label>
+                {specOptions.warranty?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('warranty', idx, 'value', e.target.value)} placeholder="e.g., 5 years" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('warranty', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.warranty === idx} onChange={() => setDefaultSpec('warranty', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
+
+              <FormGroup>
+                <Label>Layers Options (3 variants, select default)</Label>
+                {specOptions.layers?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('layers', idx, 'value', e.target.value)} placeholder="e.g., 2 layers" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('layers', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.layers === idx} onChange={() => setDefaultSpec('layers', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
+
+              <FormGroup>
+                <Label>Thickness Options (3 variants, select default)</Label>
+                {specOptions.thickness?.map((opt, idx) => (
+                  <SpecOptionRow key={idx}>
+                    <SmallInput value={opt.value} onChange={(e) => updateSpecOption('thickness', idx, 'value', e.target.value)} placeholder="e.g., 2 microns" />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#aaa', fontSize: '14px' }}>₹</span>
+                      <SmallInput value={opt.priceModifier} onChange={(e) => updateSpecOption('thickness', idx, 'priceModifier', e.target.value)} placeholder="0" type="number" style={{ paddingLeft: '28px' }} />
+                    </div>
+                    <input type="radio" checked={defaultSpecIndex.thickness === idx} onChange={() => setDefaultSpec('thickness', idx)} />
+                  </SpecOptionRow>
+                ))}
+              </FormGroup>
+            </>
+          )}
 
           <FormGroup>
             <Label>Add-ons</Label>

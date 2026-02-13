@@ -188,45 +188,6 @@ const ProductBookingModal = ({ product, totalAmount, onClose, selectedAddons = [
 
             <Form onSubmit={handleSubmit}>
               <FormGroup>
-                <Label>Full Name *</Label>
-                <Input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  readOnly
-                  style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <Label>Email *</Label>
-                <Input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  readOnly
-                  style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <Label>Phone Number *</Label>
-                <Input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  readOnly
-                  style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
-                />
-              </FormGroup>
-
-              <FormGroup>
                 <Label>Car Company *</Label>
                 <Input
                   type="text"

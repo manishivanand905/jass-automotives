@@ -183,10 +183,19 @@ const SpecOptionRow = styled.div`
   gap: 10px;
   margin-bottom: 10px;
   align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const SmallInput = styled(Input)`
   flex: 1;
+  min-width: 120px;
+  
+  @media (max-width: 768px) {
+    min-width: 100px;
+  }
 `;
 
 const AddProduct = () => {
