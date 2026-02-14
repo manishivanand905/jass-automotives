@@ -38,7 +38,7 @@ const Hero = ({ backgroundImage }) => {
           </SlideIn>
 
           <FadeIn delay={0.6}>
-            <CTAButton href="/book-online">Get a Quote →</CTAButton>
+            <CTAButton href="/book-service">Get a Quote →</CTAButton>
           </FadeIn>
         </RightContent>
       </HeroContent>
