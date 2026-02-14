@@ -24,6 +24,7 @@ import {
   ProfileMenu,
   ProfileMenuItem,
   ProfileOverlay,
+  HeaderSpacer,
 } from "./Header.styles";
 
 const Header = () => {
@@ -34,6 +35,28 @@ const Header = () => {
   const [userRole, setUserRole] = useState(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Scroll effect for hide/show header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down & past 100px
+        setIsHeaderVisible(false);
+      } else {
+        // Scrolling up or at top
+        setIsHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Check authentication status
   useEffect(() => {
@@ -167,7 +190,7 @@ const Header = () => {
 
   return (
     <>
-      <HeaderWrapper>
+      <HeaderWrapper $isVisible={isHeaderVisible}>
         <HeaderContainer>
           <Logo href="/">
             <img src="/Images/jass-logo.png" alt="Jass Automotives Logo" />
@@ -206,6 +229,9 @@ const Header = () => {
           </MobileMenuButton>
         </HeaderContainer>
       </HeaderWrapper>
+      
+      {/* Header Spacer for fixed positioning */}
+      <HeaderSpacer />
 
       {/* Mobile Menu Overlay */}
       <Overlay $isOpen={isMobileMenuOpen} onClick={closeMobileMenu} />

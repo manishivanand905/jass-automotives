@@ -3,11 +3,15 @@ import styled from "styled-components";
 export const HeaderWrapper = styled.header`
   background-color: #000000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 998;
   margin: 0;
   padding: 0;
+  transform: translateY(${({ $isVisible }) => $isVisible ? '0' : '-100%'});
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 export const HeaderContainer = styled.div`
@@ -355,5 +359,13 @@ export const ProfileMenuItem = styled.div`
   @media (max-width: 480px) {
     padding: 14px 16px;
     font-size: 14px;
+  }
+`;
+
+export const HeaderSpacer = styled.div`
+  height: 70px;
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 50px;
   }
 `;
