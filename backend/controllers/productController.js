@@ -1,4 +1,18 @@
 const Product = require('../models/Product');
+const cloudinary = require('../config/cloudinary');
+
+const uploadToCloudinary = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: 'automotives' },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result.secure_url);
+      }
+    );
+    uploadStream.end(buffer);
+  });
+};
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -33,9 +47,14 @@ const getProductById = async (req, res) => {
 // @access  Private/Vendor
 const createProduct = async (req, res) => {
   try {
+    let imageUrl;
+    if (req.file) {
+      imageUrl = await uploadToCloudinary(req.file.buffer);
+    }
+    
     const productData = {
       ...req.body,
-      image: req.file ? `/uploads/${req.file.filename}` : undefined,
+      image: imageUrl,
       vendorId: req.user._id,
       vendorAdded: true
     };
@@ -72,7 +91,7 @@ const updateProduct = async (req, res) => {
       const updateData = { ...req.body };
       
       if (req.file) {
-        updateData.image = `/uploads/${req.file.filename}`;
+        updateData.image = await uploadToCloudinary(req.file.buffer);
       }
       
       if (req.body.specifications && typeof req.body.specifications === 'string') {

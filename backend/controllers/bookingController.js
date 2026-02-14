@@ -39,14 +39,19 @@ const createBooking = async (req, res) => {
       .populate('productId')
       .populate('serviceId');
 
-    await sendBookingConfirmation(req.body.email, {
+    // Send response immediately
+    res.status(201).json(booking);
+
+    // Send email asynchronously (don't block response)
+    sendBookingConfirmation(req.body.email, {
       ...req.body,
       orderId: booking._id,
       product: populatedBooking.productId,
       service: populatedBooking.serviceId
+    }).catch(err => {
+      console.error('Email sending failed:', err.message);
     });
 
-    res.status(201).json(booking);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
